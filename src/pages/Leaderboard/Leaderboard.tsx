@@ -44,33 +44,6 @@ import { getLeaderboard } from '../../api';
 // ];
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
-function descendingComparator(a : any, b : any, orderBy : any) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-function getComparator(order : any, orderBy : any) {
-  return order === 'desc'
-    ? (a : any, b : any) => descendingComparator(a, b, orderBy)
-    : (a : any, b : any) => -descendingComparator(a, b, orderBy);
-}
-
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-function stableSort(array : any, comparator : any) {
-  const stabilizedThis = array.map((el : any, index : number) => [el, index]);
-  stabilizedThis.sort((a : any, b : any) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el : any) => el[0]);
-}
 
 const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Username' },
@@ -79,10 +52,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props : any) {
-  const { classes, order, orderBy, rowCount, onRequestSort } = props;
-  const createSortHandler = (property : any) => (event : any) => {
-    onRequestSort(event, property);
-  };
+  const { classes, rowCount } = props;
 
   return (
     <TableHead>
@@ -94,20 +64,8 @@ function EnhancedTableHead(props : any) {
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'default'}
-            sortDirection={orderBy === headCell.id ? order : false}
           >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </span>
-              ) : null}
-            </TableSortLabel>
+            {headCell.label}
           </TableCell>
         ))}
       </TableRow>
@@ -117,9 +75,6 @@ function EnhancedTableHead(props : any) {
 
 EnhancedTableHead.propTypes = {
   classes:  PropTypes.oneOfType([PropTypes.object]).isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-  orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
 
@@ -187,10 +142,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable() {
   const classes = useStyles();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const { loading, error, data } = useQuery(getLeaderboard,
@@ -198,12 +150,6 @@ export default function EnhancedTable() {
       variables: { timeInterval: 'pastDay' }
     }
   );
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
 
 
   const handleChangePage = (event, newPage) => {
@@ -215,17 +161,16 @@ export default function EnhancedTable() {
     setPage(0);
   };
 
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
 
   if (loading) return <p>Loading...{loading}</p>;
   if (error) return <p>Error :( {error.toString()}</p>;
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+  const leaderboardData = data.getLeaderboard;
 
-  console.log(data);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, leaderboardData.length - page * rowsPerPage);
+
+  console.log(leaderboardData);
+  console.log(leaderboardData.length);
 
   return (
     <div className={classes.root}>
@@ -235,18 +180,15 @@ export default function EnhancedTable() {
           <Table
             className={classes.table}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size='medium'
             aria-label="enhanced table"
           >
             <EnhancedTableHead
               classes={classes}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              rowCount={data.length}
+              rowCount={leaderboardData.length}
             />
             <TableBody>
-              {stableSort(data.getLeaderboard, getComparator(order, orderBy))
+              {leaderboardData
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
@@ -269,7 +211,7 @@ export default function EnhancedTable() {
                   );
                 })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                <TableRow style={{ height: 53 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
@@ -279,17 +221,13 @@ export default function EnhancedTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={data.length}
+          count={leaderboardData.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </div>
   );
 }

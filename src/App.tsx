@@ -22,7 +22,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   navButton: {
-    textTransform: 'none'
+    textTransform: 'none',
+    margin: '0px 10px',
+    fontSize: '14px'
   }
 }));
 
@@ -42,9 +44,9 @@ function App() {
           {/* <Typography>Leaderboard</Typography>
               <Typography>Leaderboard</Typography>
               <Typography>Leaderboard</Typography> */}
-          <Button className={classes.navButton} variant="text">Leaderboard</Button>
-          <Button className={classes.navButton} variant="text">User Stats</Button>
-          <Button className={classes.navButton} variant="text">Rules</Button>
+          <Button className={classes.navButton}>Leaderboard</Button>
+          <Button className={classes.navButton}>User Stats</Button>
+          <Button className={classes.navButton}>Rules</Button>
         </Toolbar>
       </AppBar>
 
