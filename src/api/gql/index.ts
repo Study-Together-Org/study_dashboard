@@ -1,2 +1,2 @@
-export { default as CREATE_STORE } from './CREATE_STORE';
-export { default as DELETE_STORE } from './DELETE_STORE';
+export { default as getLeaderboard } from './getLeaderboard';
+export { default as getUserStats } from './getUserStats';
