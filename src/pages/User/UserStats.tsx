@@ -4,6 +4,8 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import { useParams } from 'react-router-dom';
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, VerticalRectSeries, LineSeries } from 'react-vis';
+import { useQuery } from '@apollo/client';
+import { getUserStats } from '../../api';
 
 interface ParamTypes {
   userId: string
@@ -92,15 +94,15 @@ function toFixed(n : any) {
   return n.toFixed(2);
 }
 
-const data = [1, 1, 1, 2, 2.2, 1, 2.5];
+const hourdata = [1, 1, 1, 2, 2.2, 1, 2.5];
 
-const DATA : any[] = data.map((el, index) => (
+const DATA : any[] = hourdata.map((el, index) => (
   { x0: index * ONE_DAY + timestamp,
     x: (index + 1) * ONE_DAY + timestamp,
     y: el }));
 
 
-const MovingAverageData : any[] = sma(data, 3, undefined);
+const MovingAverageData : any[] = sma(DATA, 3, undefined);
 
 const formattedMovingData : any[] = MovingAverageData.map((el, index) => (
   { x: (index + 3) * ONE_DAY + timestamp, y: el }
@@ -108,6 +110,12 @@ const formattedMovingData : any[] = MovingAverageData.map((el, index) => (
 
 function UserStats() {
   const { userId } = useParams<ParamTypes>();
+
+  const { loading, error, data } = useQuery(getUserStats);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
+  if (data) console.log(data);
 
   return (
     <Container maxWidth="sm">
