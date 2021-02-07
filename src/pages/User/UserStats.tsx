@@ -1,11 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
 import { useParams } from 'react-router-dom';
-import { XYPlot, XAxis, YAxis, HorizontalGridLines, VerticalGridLines, VerticalRectSeries, LineSeries } from 'react-vis';
 import { useQuery } from '@apollo/client';
+import {
+  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LabelList,
+} from 'recharts';
 import { getUserStats } from '../../api';
+
+const testData = [
+  {
+    date: 'Feb', hours: 100,
+  },
+  {
+    date: 'Mar', hours: 2210,
+  },
+  {
+    date: 'Apr', hours: 2290,
+  },
+  {
+    date: 'May', hours: 2000,
+  },
+  {
+    date: 'Jun', hours: 2181,
+  },
+  {
+    date: 'Jul', hours: 2500,
+  },
+  {
+    date: 'Aug', hours: 2100,
+  },
+];
+
 
 interface ParamTypes {
   userId: string
@@ -34,8 +63,7 @@ const ONE_DAY = 86400000;
  *  */
 
 
-
-function sma(arr : any[], range : number, format : any) {
+function sma(arr: any[], range: number, format: any) {
   if (!Array.isArray(arr)) {
     throw TypeError('expected first argument to be an array');
   }
@@ -64,7 +92,7 @@ function sma(arr : any[], range : number, format : any) {
  * @return {Number} Average of range.
  */
 
-function avg(arr : any[], idx : number, range : number) {
+function avg(arr: any[], idx: number, range: number) {
   return sum(arr.slice(idx - range, idx)) / range;
 }
 
@@ -74,7 +102,7 @@ function avg(arr : any[], idx : number, range : number) {
  * @return {Number} Sum
  */
 
-function sum(arr : any[]) {
+function sum(arr: any[]) {
   let len = arr.length;
   let num = 0;
   while (len) {
@@ -90,21 +118,23 @@ function sum(arr : any[]) {
  * @return {String} Formatted number.
  */
 
-function toFixed(n : any) {
+function toFixed(n: any) {
   return n.toFixed(2);
 }
 
 const hourdata = [1, 1, 1, 2, 2.2, 1, 2.5];
 
-const DATA : any[] = hourdata.map((el, index) => (
-  { x0: index * ONE_DAY + timestamp,
+const DATA: any[] = hourdata.map((el, index) => (
+  {
+    x0: index * ONE_DAY + timestamp,
     x: (index + 1) * ONE_DAY + timestamp,
-    y: el }));
+    y: el,
+  }));
 
 
-const MovingAverageData : any[] = sma(DATA, 3, undefined);
+const MovingAverageData: any[] = sma(DATA, 3, undefined);
 
-const formattedMovingData : any[] = MovingAverageData.map((el, index) => (
+const formattedMovingData: any[] = MovingAverageData.map((el, index) => (
   { x: (index + 3) * ONE_DAY + timestamp, y: el }
 ));
 
@@ -112,30 +142,83 @@ function UserStats() {
   const { userId } = useParams<ParamTypes>();
 
   const { loading, error, data } = useQuery(getUserStats);
+  const [series, setSeries] = useState();
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
-  if (data) console.log(data);
+  if (data) {
+    console.log(data);
+    console.log(data.getUserStats.pastWeekTimeSeries.map((day: { datetime: string, y: number }) => ({
+      x: day.datetime,
+      y: day.y,
+    })));
+  }
 
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   return (
-    <Container maxWidth="sm">
-      <Box my={4}>
-        <Typography>This is the user stats page for {userId}</Typography>
-      </Box>
-      <XYPlot
-        xDomain={[timestamp, timestamp + 7 * ONE_DAY]}
-        yDomain={[0.1, 2.1]}
-        xType="time"
-        width={300}
-        height={300}
+    <Container maxWidth="lg">
+      <Grid
+        container
+        spacing={3}
       >
-        <VerticalGridLines />
-        <HorizontalGridLines />
-        <XAxis />
-        <YAxis />
-        <VerticalRectSeries data={DATA} style={{ stroke: '#fff' }} />
-        <LineSeries data={formattedMovingData} />
-      </XYPlot>
+        <Grid item xs={12}>
+          <Paper>
+            <Grid container spacing={3}>
+              <Grid container item xs={6}>
+                <Grid item xs={6}>
+                  Hours Studied
+                </Grid>
+                <Grid item xs={6}>
+                  Leaderboard Placement
+                </Grid>
+                <Grid item xs={6}>
+                  0.9h
+                </Grid>
+                <Grid item xs={6}>
+                  #523
+                </Grid>
+              </Grid>
+              <Grid item xs={8}>
+                <BarChart
+                  width={500}
+                  height={300}
+                  data={testData}
+                  margin={{
+                    top: 5, right: 30, left: 20, bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="hours" fill="#8884d8" />
+                </BarChart>
+              </Grid>
+              <Grid item xs={12}>
+                Last year
+              </Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper>
+            Card 1
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper>
+            Card 2
+          </Paper>
+        </Grid>
+        <Grid item xs={4}>
+          <Paper>
+            Card 3
+          </Paper>
+        </Grid>
+      </Grid>
     </Container>
   );
 }
