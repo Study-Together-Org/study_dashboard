@@ -3,10 +3,12 @@ import { Switch, Route } from 'react-router-dom';
 import UserInsights from './UserInsights';
 import UserStats from './UserStats';
 import UserTodos from './UserTodos';
+import UserSearch from './UserSearch';
 
 function UserPage() {
   return (
     <Switch>
+      <Route exact path="/user" component={UserSearch} />
       <Route exact path={['/user/:userId', '/user/:userId/stats' ]} component={UserStats} />
       <Route exact path="/user/:userId/insights" component={UserInsights} />
       <Route exact path="/user/:userId/todos" component={UserTodos} />
