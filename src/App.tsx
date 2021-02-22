@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import UserPage from './pages/User';
 import Landing from './pages/Landing';
+import Leaderboard from './pages/Leaderboard';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  navButton: {
+    textTransform: 'none',
+    margin: '0px 10px',
+    fontSize: '14px'
+  }
 }));
 
 function App() {
@@ -35,7 +41,12 @@ function App() {
           <Typography variant="h6" className={classes.title}>
             Study Together
           </Typography>
-          <Button color="inherit">Login</Button>
+          {/* <Typography>Leaderboard</Typography>
+              <Typography>Leaderboard</Typography>
+              <Typography>Leaderboard</Typography> */}
+          <Button className={classes.navButton}>Leaderboard</Button>
+          <Button className={classes.navButton}>User Stats</Button>
+          <Button className={classes.navButton}>Rules</Button>
         </Toolbar>
       </AppBar>
 
@@ -44,6 +55,10 @@ function App() {
         <Route
           path="/user"
           component={UserPage}
+        />
+        <Route
+          path="/leaderboard"
+          component={Leaderboard}
         />
       </Switch>
     </div>
