@@ -1,6 +1,4 @@
 import React from 'react';
-import { Header, List } from 'semantic-ui-react';
-import clsx from 'clsx';
 import {
   createStyles,
   lighten,
@@ -25,15 +23,15 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-
+ 
 const limit = 4;
-
+ 
 interface Data {
   rank: number;
   discord_user_id: number;
   study_time: number;
 }
-
+ 
 function createData(
   rank: number,
   discord_user_id: number,
@@ -41,22 +39,21 @@ function createData(
 ): Data {
   return { rank, discord_user_id, study_time };
 }
-
+ 
 interface HeadCell {
   disablePadding: boolean;
   id: keyof Data;
   label: string;
   numeric: boolean;
 }
-
+ 
 const headCells: HeadCell[] = [
   { id: 'rank', numeric: true, disablePadding: true, label: 'Rank' },
   { id: 'discord_user_id', numeric: true, disablePadding: false, label: 'Discord User Id' },
   { id: 'study_time', numeric: true, disablePadding: false, label: 'Study Time' },
 ];
-
+ 
 function EnhancedTableHead() {
-  console.log('eh');
   return (
     <TableHead>
       <TableRow>
@@ -73,7 +70,7 @@ function EnhancedTableHead() {
     </TableHead>
   );
 }
-
+ 
 const useToolbarStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -81,21 +78,21 @@ const useToolbarStyles = makeStyles((theme: Theme) =>
       paddingRight: theme.spacing(1),
     },
     highlight:
-      theme.palette.type === 'light'
-        ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-        }
-        : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
+       theme.palette.type === 'light'
+         ? {
+           color: theme.palette.secondary.main,
+           backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+         }
+         : {
+           color: theme.palette.text.primary,
+           backgroundColor: theme.palette.secondary.dark,
+         },
     title: {
       flex: '1 1 100%',
     },
   })
 );
-
+ 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -121,38 +118,47 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
-export const Leaderboard = ({ leaderboard }) => {
+ 
+const Leaderboard = ({ leaderboard }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
+ 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
-
+ 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+ 
   const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDense(event.target.checked);
   };
+<<<<<<< HEAD
 
   const rows = leaderboard.map((user : Data) => (
+=======
+ 
+  const rows = leaderboard.map((user) => (
+>>>>>>> 797a43d0411511c11bcd59526eeba996db419310
     createData(
       user.rank,
       user.discord_user_id,
       user.study_time
     ))
   );
+<<<<<<< HEAD
 
   console.log(rows);
 
+=======
+ 
+>>>>>>> 797a43d0411511c11bcd59526eeba996db419310
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
+ 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -169,7 +175,7 @@ export const Leaderboard = ({ leaderboard }) => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row: Data, index: number) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
-
+ 
                   return (
                     <TableRow
                       hover
@@ -177,17 +183,17 @@ export const Leaderboard = ({ leaderboard }) => {
                       key={row.rank}
                     >
                       <TableCell align="center" component="th" scope="row" padding="none">
-                        {row.rank}
-                      </TableCell>
+                         {row.rank}
+                       </TableCell>
                       <TableCell align="center">{row.discord_user_id}</TableCell>
                       <TableCell align="center">{row.study_time}</TableCell>
                     </TableRow>
                   );
                 })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
+              <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
               )}
             </TableBody>
           </Table>
@@ -209,3 +215,6 @@ export const Leaderboard = ({ leaderboard }) => {
     </div>
   );
 };
+
+
+export default Leaderboard;
