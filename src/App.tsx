@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
+  const preventDefault = (event) => event.preventDefault();
 
   return (
     <div className="{classes.root}">
@@ -44,9 +45,12 @@ function App() {
           {/* <Typography>Leaderboard</Typography>
               <Typography>Leaderboard</Typography>
               <Typography>Leaderboard</Typography> */}
-          <Button className={classes.navButton}>Leaderboard</Button>
-          <Button className={classes.navButton}>User Stats</Button>
-          <Button className={classes.navButton}>Rules</Button>
+          {/* <Link component="button" href="/leaderboard" onClick={preventDefault}>Leaderboard</Link>
+              <Link component="button" href="/users" onClick={preventDefault}>Users</Link>
+              <Link component="button" href="/rules" onClick={preventDefault}>Rules</Link> */}
+          <Button component={Link} to="/leaderboard" className={classes.navButton}>Leaderboard</Button>
+          <Button component={Link} to="/users" className={classes.navButton}>User Stats</Button>
+          <Button component={Link} to="/rules" className={classes.navButton}>Rules</Button>
         </Toolbar>
       </AppBar>
 
