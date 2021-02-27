@@ -141,13 +141,15 @@ export const Leaderboard = ({ leaderboard }) => {
     setDense(event.target.checked);
   };
 
-  const rows = leaderboard.map((user) => (
+  const rows = leaderboard.map((user : Data) => (
     createData(
       user.rank,
       user.discord_user_id,
       user.study_time
     ))
   );
+
+  console.log(rows);
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -165,7 +167,7 @@ export const Leaderboard = ({ leaderboard }) => {
             <TableBody>
               {rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
+                .map((row: Data, index: number) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
