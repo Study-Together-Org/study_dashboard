@@ -75,9 +75,9 @@ function sma(arr: any[], range: number, format: any) {
     throw TypeError('expected first argument to be an array');
   }
 
-  const fn = typeof format === 'function' ? format : toFixed;
+  const fn : any = typeof format === 'function' ? format : toFixed;
   const num = range || arr.length;
-  const res = [];
+  const res : any[] = [];
   const len = arr.length + 1;
   let idx = num - 1;
   while ((idx += 1) < len) {

@@ -29,12 +29,6 @@
         "args": "none"
       }
     ],
-    "@typescript-eslint/no-explicit-any": [
-      "error",
-      {
-        "ignoreRestArgs": true
-      }
-    ],
     "max-len": [
       "warn",
       {
@@ -54,13 +48,9 @@
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": [
-          "**/*.test.js",
-          "**/*.test.jsx",
-          "**/*.test.ts",
-          "**/*.test.tsx",
-          "src/tests/**/*"
-        ]
+        "devDependencies": false,
+        "optionalDependencies": false,
+        "peerDependencies": false,
       }
     ],
     "react/jsx-props-no-spreading": "off",
