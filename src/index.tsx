@@ -3,12 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import 'react-vis/dist/style.css';
 import { BrowserRouter } from 'react-router-dom';
-import { ApolloProvider } from '@apollo/client';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { client } from './api';
 
 const darkTheme = createMuiTheme({
   palette: {
@@ -18,14 +16,12 @@ const darkTheme = createMuiTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <ThemeProvider theme={darkTheme}>
-        <CssBaseline />
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ThemeProvider>
-    </ApolloProvider>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
