@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { lighten, makeStyles } from '@material-ui/core/styles';
+import { lighten, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -19,6 +19,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import UserSearch from './UserSearch';
 
@@ -69,6 +74,47 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
+function ControlledOpenSelect(props) {
+  const classes = useStyles();
+  const [timeFrame, setTimeFrame] = React.useState<string>('pastWeek');
+  const [open, setOpen] = React.useState(false);
+
+  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setTimeFrame(event.target.value as string);
+    props.onChange(event.target.value as string);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  return (
+    <div>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="demo-controlled-open-select-label">Time Frame</InputLabel>
+        <Select
+          labelId="demo-controlled-open-select-label"
+          id="demo-controlled-open-select"
+          open={open}
+          onClose={handleClose}
+          onOpen={handleOpen}
+          value={timeFrame}
+          onChange={handleChange}
+        >
+          <MenuItem value='pastWeek'>Past Week</MenuItem>
+          <MenuItem value='pastMonth'>Past Month</MenuItem>
+          <MenuItem value='pastYear'>Past Year</MenuItem>
+          <MenuItem value='allTime'>All time</MenuItem>
+        </Select>
+      </FormControl>
+    </div>
+  );
+}
+
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
 
@@ -105,15 +151,25 @@ const useStyles = makeStyles((theme) => ({
     top: 20,
     width: 1,
   },
+  button: {
+    display: 'block',
+    marginTop: theme.spacing(2),
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
 }));
 
 const Leaderboard = () => {
   const classes = useStyles();
   const [page, setPage] = useState(0);
+  const [timeFrame, setTimeframe] = React.useState<string>('pastWeek');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [leaderboardData, setLeaderboardData] = useState<any>({});
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  let timeFrameChange = false;
 
 
   useEffect(() => {
@@ -129,10 +185,24 @@ const Leaderboard = () => {
   }, []);
 
   useEffect(() => {
+    console.log('testestestes');
+    axios.get(`/leaderboard?offset=0&limit=25&time_interval=${timeFrame}`)
+      .then((response) => {
+        console.log('New time frame');
+        console.log(response.data);
+        // console.log(response.data.json());
+        console.log('Setting loading to false');
+        setLeaderboardData(response.data);
+        setLoading(false);
+        setPage(0);
+      }).catch((err) => {});
+  }, [timeFrame]);
+
+  useEffect(() => {
     if (Object.keys(leaderboardData).length === 0) return;
     if (leaderboardData?.leaderboard.length < page * 10) {
       console.log('New request');
-      axios.get(`/leaderboard?offset=${leaderboardData.leaderboard.length}&limit=25&time_interval=pastWeek`)
+      axios.get(`/leaderboard?offset=${leaderboardData.leaderboard.length}&limit=25&time_interval=${timeFrame}`)
         .then((response) => {
           console.log(leaderboardData.leaderboard.concat(response.data.leaderboard));
           setLeaderboardData({
@@ -154,14 +224,21 @@ const Leaderboard = () => {
     setPage(0);
   };
 
+  function handleTimeFrameChange(value: string) {
+    setTimeframe(value);
+    timeFrameChange = true;
+    console.log(timeFrame, 'changed');
+  }
+
   if (loading) return <p>Loading...{loading}</p>;
   if (error) return <p>Error :( {error.toString()}</p>;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, leaderboardData?.leaderboard.length - page * rowsPerPage);
 
-
   return (
     <div className={classes.root}>
+
+      <ControlledOpenSelect onChange={handleTimeFrameChange} />
       <Paper className={classes.paper}>
         <EnhancedTableToolbar />
         <TableContainer>
