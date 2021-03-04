@@ -1,10 +1,9 @@
-import React from 'react';
+import React from 'react'
 
 // @ts-ignore
 const CustomTooltipContent = ({ active, payload, label }) => {
-
   if (active && payload && payload.length) {
-    console.log(payload);
+    console.log(payload)
     return (
       <div
         className="recharts-default-tooltip"
@@ -16,32 +15,53 @@ const CustomTooltipContent = ({ active, payload, label }) => {
           whiteSpace: 'nowrap',
         }}
       >
-        <p className="recharts-tooltip-label" style={{ margin: '0px' }}>{label}</p>
-        <ul className="recharts-tooltip-item-list" style={{ padding: '0px', margin: '0px' }}>
+        <p className="recharts-tooltip-label" style={{ margin: '0px' }}>
+          {label}
+        </p>
+        <ul
+          className="recharts-tooltip-item-list"
+          style={{ padding: '0px', margin: '0px' }}
+        >
           <li
             className="recharts-tooltip-item"
-            style={{ display: 'block', paddingTop: '4px', paddingBottom: '4px', color: 'rgb(136, 132, 216)' }}
+            style={{
+              display: 'block',
+              paddingTop: '4px',
+              paddingBottom: '4px',
+              color: 'rgb(136, 132, 216)',
+            }}
           >
-            <span className="recharts-tooltip-item-name">{payload[0].name}</span>
+            <span className="recharts-tooltip-item-name">
+              {payload[0].name}
+            </span>
             <span className="recharts-tooltip-item-separator"> : </span>
-            <span className="recharts-tooltip-item-value">{payload[0].value}</span>
+            <span className="recharts-tooltip-item-value">
+              {payload[0].value}
+            </span>
             <span className="recharts-tooltip-item-unit"> </span>
           </li>
           <li
             className="recharts-tooltip-item"
-            style={{ display: 'block', paddingTop: '4px', paddingBottom: '4px', color: 'rgb(130, 202, 157)' }}
+            style={{
+              display: 'block',
+              paddingTop: '4px',
+              paddingBottom: '4px',
+              color: 'rgb(130, 202, 157)',
+            }}
           >
             <span className="recharts-tooltip-item-name">rank</span>
             <span className="recharts-tooltip-item-separator"> : </span>
-            <span className="recharts-tooltip-item-value">{payload[0].payload.rank}</span>
+            <span className="recharts-tooltip-item-value">
+              {payload[0].payload.rank}
+            </span>
             <span className="recharts-tooltip-item-unit"> </span>
           </li>
         </ul>
       </div>
-    );
+    )
   }
 
-  return null;
-};
+  return null
+}
 
-export default CustomTooltipContent;
+export default CustomTooltipContent

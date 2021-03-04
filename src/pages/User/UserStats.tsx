@@ -1,47 +1,62 @@
-import React, { useEffect, useState } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import Typography from '@material-ui/core/Typography'
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Divider from '@material-ui/core/Divider'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
+import { makeStyles } from '@material-ui/core/styles'
+import { useParams } from 'react-router-dom'
 import {
-  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LabelList, ResponsiveContainer,
-} from 'recharts';
-import axios from 'axios';
+  BarChart,
+  Bar,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  LabelList,
+  ResponsiveContainer,
+} from 'recharts'
+import axios from 'axios'
 
-import CustomTooltipContent from '../../components/CustomTooltipContent';
+import CustomTooltipContent from '../../components/CustomTooltipContent'
 
 const testData = [
   {
-    date: 'Feb', hours: 100,
+    date: 'Feb',
+    hours: 100,
   },
   {
-    date: 'Mar', hours: 2210,
+    date: 'Mar',
+    hours: 2210,
   },
   {
-    date: 'Apr', hours: 2290,
+    date: 'Apr',
+    hours: 2290,
   },
   {
-    date: 'May', hours: 2000,
+    date: 'May',
+    hours: 2000,
   },
   {
-    date: 'Jun', hours: 2181,
+    date: 'Jun',
+    hours: 2181,
   },
   {
-    date: 'Jul', hours: 2500,
+    date: 'Jul',
+    hours: 2500,
   },
   {
-    date: 'Aug', hours: 2100,
+    date: 'Aug',
+    hours: 2100,
   },
-];
-
+]
 
 interface ParamTypes {
   userId: string
@@ -54,8 +69,8 @@ interface ParamTypes {
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-const timestamp = new Date('May 23 2017').getTime();
-const ONE_DAY = 86400000;
+const timestamp = new Date('May 23 2017').getTime()
+const ONE_DAY = 86400000
 
 /* const DATA : any[] = [
  *   { x0: ONE_DAY * 2, x: ONE_DAY * 3, y: 1 },
@@ -69,21 +84,20 @@ const ONE_DAY = 86400000;
  * ].map(el => ({ x0: el.x0 + timestamp, x: el.x + timestamp, y: el.y }));
  *  */
 
-
 function sma(arr: any[], range: number, format: any) {
   if (!Array.isArray(arr)) {
-    throw TypeError('expected first argument to be an array');
+    throw TypeError('expected first argument to be an array')
   }
 
-  const fn : any = typeof format === 'function' ? format : toFixed;
-  const num = range || arr.length;
-  const res : any[] = [];
-  const len = arr.length + 1;
-  let idx = num - 1;
+  const fn: any = typeof format === 'function' ? format : toFixed
+  const num = range || arr.length
+  const res: any[] = []
+  const len = arr.length + 1
+  let idx = num - 1
   while ((idx += 1) < len) {
-    res.push(fn(avg(arr, idx, num)));
+    res.push(fn(avg(arr, idx, num)))
   }
-  return res;
+  return res
 }
 
 /**
@@ -100,7 +114,7 @@ function sma(arr: any[], range: number, format: any) {
  */
 
 function avg(arr: any[], idx: number, range: number) {
-  return sum(arr.slice(idx - range, idx)) / range;
+  return sum(arr.slice(idx - range, idx)) / range
 }
 
 /**
@@ -110,13 +124,13 @@ function avg(arr: any[], idx: number, range: number) {
  */
 
 function sum(arr: any[]) {
-  let len = arr.length;
-  let num = 0;
+  let len = arr.length
+  let num = 0
   while (len) {
-    len -= 1;
-    num += Number(arr[len]);
+    len -= 1
+    num += Number(arr[len])
   }
-  return num;
+  return num
 }
 
 /**
@@ -126,96 +140,85 @@ function sum(arr: any[]) {
  */
 
 function toFixed(n: any) {
-  return n.toFixed(2);
+  return n.toFixed(2)
 }
 
-const hourdata = [1, 1, 1, 2, 2.2, 1, 2.5];
+const hourdata = [1, 1, 1, 2, 2.2, 1, 2.5]
 
-const DATA: any[] = hourdata.map((el, index) => (
-  {
-    x0: index * ONE_DAY + timestamp,
-    x: (index + 1) * ONE_DAY + timestamp,
-    y: el,
-  }));
+const DATA: any[] = hourdata.map((el, index) => ({
+  x0: index * ONE_DAY + timestamp,
+  x: (index + 1) * ONE_DAY + timestamp,
+  y: el,
+}))
 
+const MovingAverageData: any[] = sma(DATA, 3, undefined)
 
-const MovingAverageData: any[] = sma(DATA, 3, undefined);
-
-const formattedMovingData: any[] = MovingAverageData.map((el, index) => (
-  { x: (index + 3) * ONE_DAY + timestamp, y: el }
-));
+const formattedMovingData: any[] = MovingAverageData.map((el, index) => ({
+  x: (index + 3) * ONE_DAY + timestamp,
+  y: el,
+}))
 
 const useStyles = makeStyles(theme => ({
   paper: {
-    backgroundColor: '20232a',
-    color: 'white',
+    //   backgroundColor: '20232a',
+    //   color: 'white',
   },
   text: {
-    color: 'white',
+    // color: 'white',
   },
   divider: {
-    background: '#BEBEBE',
+    // background: '#BEBEBE',
   },
   icon: {
-    fill: 'white',
+    /* fill: 'white', */
   },
   select: {
-    '&:before': {
-      borderColor: 'white',
-    },
-    '&:after': {
-      borderColor: 'white',
-    },
+    // '&:before': {
+    //   borderColor: 'white',
+    // },
+    // '&:after': {
+    //   borderColor: 'white',
+    // },
   },
-}));
-
+}))
 
 function UserStats() {
-  const { userId } = useParams<ParamTypes>();
-  const classes = useStyles();
+  const { userId } = useParams<ParamTypes>()
+  const classes = useStyles()
 
-  const [series, setSeries] = useState();
-  const [userStats, setUserStats] = useState();
-  const [timeInterval, setTimeInterval] = useState('pastWeek');
+  const [series, setSeries] = useState()
+  const [userStats, setUserStats] = useState()
+  const [timeInterval, setTimeInterval] = useState('pastWeek')
 
   const fetchTimeSeries = async () => {
-    const timeseries = await axios.get(
-      '/usertimeseries/102484975215862243',
-      {
-        params: {
-          time_interval: timeInterval,
-        },
-      }
-    );
+    const timeseries = await axios.get('/usertimeseries/102484975215862243', {
+      params: {
+        time_interval: timeInterval,
+      },
+    })
 
-    setSeries(timeseries.data.timeseries);
-  };
+    setSeries(timeseries.data.timeseries)
+  }
 
   const fetchUserStats = async () => {
-    const userstats = await axios.get(
-      '/userstats/102484975215862243'
-    );
+    const userstats = await axios.get('/userstats/102484975215862243')
 
-    console.log(userstats);
+    console.log(userstats)
 
-    setUserStats(userstats.data);
-  };
+    setUserStats(userstats.data)
+  }
 
   useEffect(() => {
-    fetchTimeSeries()
-      .catch(
-        e => {
-          console.log(`error in timeseries call: ${e.message}`);
-        });
-  }, [timeInterval]);
+    fetchTimeSeries().catch(e => {
+      console.log(`error in timeseries call: ${e.message}`)
+    })
+  }, [timeInterval])
 
   useEffect(() => {
-    fetchUserStats()
-      .catch(
-        e => {
-          console.log(`error in userstats call: ${e.message}`);
-        });
-  }, []);
+    fetchUserStats().catch(e => {
+      console.log(`error in userstats call: ${e.message}`)
+    })
+  }, [])
 
   // @ts-ignore
   // @ts-ignore
@@ -224,13 +227,13 @@ function UserStats() {
   // @ts-ignore
   return (
     <Container maxWidth="lg">
-      <Grid
-        container
-        spacing={7}
-        style={{ height: '80vh' }}
-      >
+      <Grid container spacing={7} style={{ height: '80vh' }}>
         <Grid item xs={12} style={{ paddingTop: '7vh' }}>
-          <Paper style={{ height: '50vh', backgroundColor: '#20232a', color: 'white' }}>
+          <Paper
+            style={{
+              height: '50vh',
+            }}
+          >
             <List style={{ height: '100%' }}>
               <ListItem style={{ height: '15%' }}>
                 <Grid container item xs={6}>
@@ -249,29 +252,36 @@ function UserStats() {
                 </Grid>
               </ListItem>
               <ListItem style={{ height: '70%' }}>
-                <Grid item xs={8} style={{ height: '100%', color: 'black' }}>
-                  {
-                    series &&
+                <Grid item xs={8} style={{ height: '100%' }}>
+                  {series && (
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
                         data={series}
                         margin={{
-                          top: 5, right: 30, left: 20, bottom: 5,
+                          top: 5,
+                          right: 30,
+                          left: 20,
+                          bottom: 5,
                         }}
                       >
                         <CartesianGrid strokeDasharray="3 3" vertical={false} />
                         <XAxis dataKey="date" />
                         <YAxis />
-                        <Tooltip content={
-
-                          // @ts-ignore
-                          <CustomTooltipContent />
-                        }
+                        <Tooltip
+                          content={
+                            // @ts-ignore
+                            <CustomTooltipContent />
+                          }
                         />
-                        <Bar dataKey="study_time" fill="#8884d8" radius={7} barSize={20} />
+                        <Bar
+                          dataKey="study_time"
+                          fill="#8884d8"
+                          radius={7}
+                          barSize={20}
+                        />
                       </BarChart>
                     </ResponsiveContainer>
-                  }
+                  )}
                 </Grid>
               </ListItem>
               <Divider className={classes.divider} />
@@ -284,26 +294,32 @@ function UserStats() {
                       icon: classes.icon,
                     },
                   }}
-                  style={{ color: 'white' }}
                   onChange={(e: any) => {
-                    setTimeInterval(e.target.value);
+                    setTimeInterval(e.target.value)
                   }}
                 >
-                  <MenuItem value='allTime'>All Time</MenuItem>
-                  <MenuItem value='pastMonth'>Past Month</MenuItem>
-                  <MenuItem value='pastWeek'>Past Week</MenuItem>
-                  <MenuItem value='pastDay'>Past Day</MenuItem>
+                  <MenuItem value="allTime">All Time</MenuItem>
+                  <MenuItem value="pastMonth">Past Month</MenuItem>
+                  <MenuItem value="pastWeek">Past Week</MenuItem>
+                  <MenuItem value="pastDay">Past Day</MenuItem>
                 </Select>
               </ListItem>
             </List>
           </Paper>
         </Grid>
         <Grid item xs={4}>
-          <Paper style={{ height: '30vh', backgroundColor: '#20232a', color: 'white' }}>
-            {
-              userStats &&
+          <Paper
+            style={{
+              height: '30vh',
+            }}
+          >
+            {userStats && (
               <div style={{ paddingLeft: '30px' }}>
-                <Typography variant="h6" gutterBottom={true} style={{ paddingTop: '30px' }}>
+                <Typography
+                  variant="h6"
+                  gutterBottom={true}
+                  style={{ paddingTop: '30px' }}
+                >
                   Study Time
                 </Typography>
                 <Typography variant="body1">
@@ -331,15 +347,22 @@ function UserStats() {
                   }
                 </Typography>
               </div>
-            }
+            )}
           </Paper>
         </Grid>
         <Grid item xs={4}>
-          <Paper style={{ height: '30vh', backgroundColor: '#20232a', color: 'white' }}>
-            {
-              userStats &&
+          <Paper
+            style={{
+              height: '30vh',
+            }}
+          >
+            {userStats && (
               <div style={{ paddingLeft: '30px' }}>
-                <Typography variant="h6" gutterBottom={true} style={{ paddingTop: '30px' }}>
+                <Typography
+                  variant="h6"
+                  gutterBottom={true}
+                  style={{ paddingTop: '30px' }}
+                >
                   Leaderboard Placement
                 </Typography>
                 <Typography variant="body1">
@@ -367,15 +390,22 @@ function UserStats() {
                   }
                 </Typography>
               </div>
-            }
+            )}
           </Paper>
         </Grid>
         <Grid item xs={4}>
-          <Paper style={{ height: '30vh', backgroundColor: '#20232a', color: 'white' }}>
-            {
-              userStats &&
+          <Paper
+            style={{
+              height: '30vh',
+            }}
+          >
+            {userStats && (
               <div style={{ paddingLeft: '30px' }}>
-                <Typography variant="h6" gutterBottom={true} style={{ paddingTop: '30px' }}>
+                <Typography
+                  variant="h6"
+                  gutterBottom={true}
+                  style={{ paddingTop: '30px' }}
+                >
                   Study Role
                 </Typography>
                 {/*
@@ -399,12 +429,12 @@ function UserStats() {
                   }
                 </Typography>
               </div>
-            }
+            )}
           </Paper>
         </Grid>
       </Grid>
     </Container>
-  );
+  )
 }
 
-export default UserStats;
+export default UserStats

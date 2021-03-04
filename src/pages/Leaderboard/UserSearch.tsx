@@ -1,48 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
-import fetch from 'cross-fetch';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import React, { useEffect, useState } from 'react'
+import { withRouter } from 'react-router-dom'
+import fetch from 'cross-fetch'
+import TextField from '@material-ui/core/TextField'
+import Autocomplete from '@material-ui/lab/Autocomplete'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 interface User {
-  username: string;
-  user_id: string;
+  username: string
+  user_id: string
 }
 
 const UserSearch = ({ history }) => {
-  const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState([]);
+  const [open, setOpen] = useState(false)
+  const [options, setOptions] = useState([])
 
-  const [value, setValue] = useState({ username: '', user_id: '' });
-  const [inputValue, setInputValue] = useState('');
+  const [value, setValue] = useState(null)
+  const [inputValue, setInputValue] = useState('')
 
-  const [loading, setLoading] = useState(open && options.length === 0);
+  const [loading, setLoading] = useState(open && options.length === 0)
 
   useEffect(() => {
-
     if (inputValue.length < 1) {
-      return () => null;
+      return () => null
     }
 
     const delayDebounceFn = setTimeout(async () => {
+      const response = await fetch(`/users?match=${inputValue}`)
+      const users = await response.json()
+      setOptions(users)
+      setLoading(false)
+    }, 1000)
 
-      const response = await fetch(`/users?match=${inputValue}`);
-      const users = await response.json();
-      setOptions(users);
-      setLoading(false);
-
-    }, 1000);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [inputValue]);
+    return () => clearTimeout(delayDebounceFn)
+  }, [inputValue])
 
   // React.useEffect(() => {
   //   if (!open) {
-  //     setOptions([]);
+  //     setOptions([])
   //   }
-  // }, [open]);
 
+  //   setLoading(open && options.length === 0)
+  // }, [open])
 
   return (
     <Autocomplete
@@ -50,29 +48,29 @@ const UserSearch = ({ history }) => {
       value={value}
       onChange={(event, newValue: User | null) => {
         if (newValue) {
-          history.push(`users/${newValue.user_id}`);
-          setValue(newValue);
+          history.push(`users/${newValue.user_id}`)
+          setValue(newValue)
         }
       }}
       inputValue={inputValue}
       onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue);
+        setInputValue(newInputValue)
       }}
       style={{ width: 300 }}
       open={open}
       onOpen={() => {
-        setOpen(true);
+        setOpen(true)
       }}
       onClose={() => {
-        setOpen(false);
+        setOpen(false)
       }}
-      getOptionSelected={
-      (option: User, nvalue: User) => option.user_id === nvalue.user_id
+      getOptionSelected={(option: User, nvalue: User) =>
+        option.user_id === nvalue.user_id
       }
       getOptionLabel={(option: User) => option.username}
       options={options}
       loading={loading}
-      renderInput={(params) => (
+      renderInput={params => (
         <TextField
           {...params}
           label="Search username..."
@@ -81,7 +79,9 @@ const UserSearch = ({ history }) => {
             ...params.InputProps,
             endAdornment: (
               <>
-                {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                {loading ? (
+                  <CircularProgress color="inherit" size={20} />
+                ) : null}
                 {params.InputProps.endAdornment}
               </>
             ),
@@ -89,7 +89,7 @@ const UserSearch = ({ history }) => {
         />
       )}
     />
-  );
-};
+  )
+}
 
-export default withRouter(UserSearch);
+export default withRouter(UserSearch)
