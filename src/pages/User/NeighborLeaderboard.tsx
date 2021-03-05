@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
 import { lighten, makeStyles } from '@material-ui/core/styles'
+import Box from '@material-ui/core/Box'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -15,6 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import axios from 'axios'
+import { useHistory } from 'react-router'
 
 const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Username' },
@@ -124,7 +125,8 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Leaderboard = ({ history, leaderboardData, height }) => {
+const Leaderboard = ({ leaderboardData, height }) => {
+  const history = useHistory()
   const classes = useStyles()
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -148,6 +150,38 @@ const Leaderboard = ({ history, leaderboardData, height }) => {
               {leaderboardData.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`
 
+                if (index == 5) {
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={row.name}
+                      onClick={() => {
+                        history.push(`./${row.discord_user_id}`)
+                      }}
+                      style={{ height: '40px' }}
+                    >
+                      <TableCell>
+                        <Box fontWeight={700}>{row.rank}</Box>
+                      </TableCell>
+                      {/* padding="checkbox" */}
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
+                      >
+                        <Box fontWeight={700}>{row.username}</Box>
+                      </TableCell>
+                      {/* <TableCell align="right">{row.study_time * 60}</TableCell> */}
+                      <TableCell align="right">
+                        <Box fontWeight={700}>{row.study_time}</Box>
+                      </TableCell>
+                    </TableRow>
+                  )
+                }
+
                 return (
                   <TableRow
                     hover
@@ -155,7 +189,7 @@ const Leaderboard = ({ history, leaderboardData, height }) => {
                     tabIndex={-1}
                     key={row.name}
                     onClick={() => {
-                      history.push(`users/${row.discord_user_id}`)
+                      history.push(`./${row.discord_user_id}`)
                     }}
                     style={{ height: '40px' }}
                   >

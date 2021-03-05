@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router'
 import fetch from 'cross-fetch'
 import TextField from '@material-ui/core/TextField'
 import Autocomplete from '@material-ui/lab/Autocomplete'
@@ -10,7 +10,8 @@ interface User {
   user_id: string
 }
 
-const UserSearch = ({ history }) => {
+const UserSearch = () => {
+  const history = useHistory()
   const [open, setOpen] = useState(false)
   const [options, setOptions] = useState([])
 
@@ -90,4 +91,4 @@ const UserSearch = ({ history }) => {
   )
 }
 
-export default withRouter(UserSearch)
+export default UserSearch

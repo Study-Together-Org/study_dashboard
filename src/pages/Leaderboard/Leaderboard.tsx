@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router'
 import { lighten, makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -172,7 +172,8 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Leaderboard = ({ history }) => {
+const Leaderboard = () => {
+  const history = useHistory()
   const classes = useStyles()
   const [page, setPage] = useState(0)
   const [timeFrame, setTimeframe] = React.useState<string>('pastWeek')
@@ -330,4 +331,4 @@ const Leaderboard = ({ history }) => {
   )
 }
 
-export default withRouter(Leaderboard)
+export default Leaderboard

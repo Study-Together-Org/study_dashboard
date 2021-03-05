@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
@@ -63,6 +63,36 @@ const testData = [
 
 interface ParamTypes {
   userId: string
+}
+
+interface TimeStats {
+  rank: number
+  study_time: number
+}
+
+interface Role {
+  hours: string
+  id: number
+  name: string
+  mention: string
+}
+
+interface UserStats {
+  username: string
+  stats: {
+    pastDay: TimeStats
+    pastWeek: TimeStats
+    pastMonth: TimeStats
+    all_time: TimeStats
+    average_per_day: number
+    currentStreak: number
+    longestStreak: number
+  }
+  roleInfo: {
+    role: Role
+    next_role: Role
+    time_to_next_role: number
+  }
 }
 
 // display all time user studying
@@ -191,14 +221,17 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-function UserStats({ history }) {
+function UserStats() {
+  const history = useHistory()
   const { userId } = useParams<ParamTypes>()
   const classes = useStyles()
 
   const [series, setSeries] = useState()
   const [neighbors, setNeighbors] = useState()
-  const [userStats, setUserStats] = useState()
+  const [userStats, setUserStats] = useState<UserStats>()
   const [timeInterval, setTimeInterval] = useState('pastMonth')
+  const [studyTime, setStudyTime] = useState(0)
+  const [rank, setRank] = useState(0)
 
   const fetchTimeSeries = async () => {
     const timeseries = await axios.get(`/usertimeseries/${userId}`, {
@@ -215,7 +248,10 @@ function UserStats({ history }) {
   const fetchUserStats = async () => {
     const userstats = await axios.get(`/userstats/${userId}`)
 
-    console.log(userstats)
+    // console.log(userstats)
+    // console.log(userstats.data)
+    setRank(userstats.data.stats[timeInterval].rank)
+    setStudyTime(userstats.data.stats[timeInterval].study_time)
 
     setUserStats(userstats.data)
   }
@@ -224,7 +260,21 @@ function UserStats({ history }) {
     fetchTimeSeries().catch(e => {
       console.log(`error in timeseries call: ${e.message}`)
     })
+
+    if (userStats) {
+      setRank(userStats[timeInterval].rank)
+      setStudyTime(userStats[timeInterval].study_time)
+    }
   }, [timeInterval])
+
+  useEffect(() => {
+    fetchTimeSeries().catch(e => {
+      console.log(`error in timeseries call: ${e.message}`)
+    })
+    fetchUserStats().catch(e => {
+      console.log(`error in userstats call: ${e.message}`)
+    })
+  }, [userId])
 
   useEffect(() => {
     fetchUserStats().catch(e => {
@@ -242,9 +292,18 @@ function UserStats({ history }) {
                 <Box display="flex">
                   <Box className={classes.chartCard}>
                     <Typography variant="body1" gutterBottom={true}>
+                      <Box fontWeight="fontWeightBold">Discord User Name</Box>
+                    </Typography>
+                    <Typography variant="body1">
+                      {userStats?.username}
+                    </Typography>
+                  </Box>
+
+                  <Box className={classes.chartCard}>
+                    <Typography variant="body1" gutterBottom={true}>
                       <Box fontWeight="fontWeightBold">Hours Studied</Box>
                     </Typography>
-                    <Typography variant="body1">0.9h</Typography>
+                    <Typography variant="body1">{studyTime}</Typography>
                   </Box>
                   <Box className={classes.chartCard}>
                     <Typography variant="body1" gutterBottom={true}>
@@ -252,7 +311,7 @@ function UserStats({ history }) {
                         Leaderboard Placement
                       </Box>
                     </Typography>
-                    <Typography variant="body1">#523</Typography>
+                    <Typography variant="body1">#{rank}</Typography>
                   </Box>
                 </Box>
                 <div style={{ height: '350px', paddingRight: '20px' }}>
@@ -320,11 +379,7 @@ function UserStats({ history }) {
         <Grid item xs={4}>
           <div style={{ height: '500px' }}>
             {neighbors && (
-              <NeighborLeaderboard
-                leaderboardData={neighbors}
-                history={history}
-                height="500px"
-              />
+              <NeighborLeaderboard leaderboardData={neighbors} height="500px" />
             )}
           </div>
         </Grid>
@@ -440,4 +495,4 @@ function UserStats({ history }) {
   )
 }
 
-export default withRouter(UserStats)
+export default UserStats

@@ -10,6 +10,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import UserPage from './pages/User'
 import Landing from './pages/Landing'
 import Leaderboard from './pages/Leaderboard'
+import Box from '@material-ui/core/Box'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,11 +21,12 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+    fontFamily: 'Titillium Web',
   },
   navButton: {
     textTransform: 'none',
     margin: '0px 10px',
-    fontSize: '14px',
+    fontSize: '16px',
   },
 }))
 
@@ -40,7 +42,7 @@ function App() {
               <MenuIcon />
               </IconButton> */}
           <Typography variant="h6" className={classes.title}>
-            Study Together
+            <Box fontWeight="fontWeightBold">Study Together</Box>
           </Typography>
           {/* <Typography>Leaderboard</Typography>
               <Typography>Leaderboard</Typography>
@@ -53,13 +55,13 @@ function App() {
             to="/leaderboard"
             className={classes.navButton}
           >
-            Leaderboard
+            <Box fontWeight={600}>Leaderboard</Box>
           </Button>
           <Button component={Link} to="/users" className={classes.navButton}>
-            User Stats
+            <Box fontWeight={600}>User Stats</Box>
           </Button>
           <Button component={Link} to="/rules" className={classes.navButton}>
-            Rules
+            <Box fontWeight={600}>Rules</Box>
           </Button>
         </Toolbar>
       </AppBar>
