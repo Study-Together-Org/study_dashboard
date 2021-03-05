@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { withRouter } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
@@ -9,8 +10,10 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
+import NeighborLeaderboard from './NeighborLeaderboard'
 import { makeStyles } from '@material-ui/core/styles'
 import { useParams } from 'react-router-dom'
+import Box from '@material-ui/core/Box'
 import {
   BarChart,
   Bar,
@@ -167,7 +170,8 @@ const useStyles = makeStyles(theme => ({
     // color: 'white',
   },
   divider: {
-    // background: '#BEBEBE',
+    background: '#BEBEBE',
+    height: '1px',
   },
   icon: {
     /* fill: 'white', */
@@ -180,28 +184,36 @@ const useStyles = makeStyles(theme => ({
     //   borderColor: 'white',
     // },
   },
+  chartCard: {
+    height: '100px',
+    padding: '20px',
+    lineHeight: '25px',
+  },
 }))
 
-function UserStats() {
+function UserStats({ history }) {
   const { userId } = useParams<ParamTypes>()
   const classes = useStyles()
 
   const [series, setSeries] = useState()
+  const [neighbors, setNeighbors] = useState()
   const [userStats, setUserStats] = useState()
-  const [timeInterval, setTimeInterval] = useState('pastWeek')
+  const [timeInterval, setTimeInterval] = useState('pastMonth')
 
   const fetchTimeSeries = async () => {
-    const timeseries = await axios.get('/usertimeseries/102484975215862243', {
+    const timeseries = await axios.get(`/usertimeseries/${userId}`, {
       params: {
         time_interval: timeInterval,
       },
     })
 
     setSeries(timeseries.data.timeseries)
+    setNeighbors(timeseries.data.neighbors)
+    console.log(timeseries.data.neighbors)
   }
 
   const fetchUserStats = async () => {
-    const userstats = await axios.get('/userstats/102484975215862243')
+    const userstats = await axios.get(`/userstats/${userId}`)
 
     console.log(userstats)
 
@@ -220,107 +232,109 @@ function UserStats() {
     })
   }, [])
 
-  // @ts-ignore
-  // @ts-ignore
-  // @ts-ignore
-  // @ts-ignore
-  // @ts-ignore
   return (
-    <Container maxWidth="lg">
-      <Grid container spacing={7} style={{ height: '80vh' }}>
-        <Grid item xs={12} style={{ paddingTop: '7vh' }}>
-          <Paper
-            style={{
-              height: '50vh',
-            }}
-          >
-            <List style={{ height: '100%' }}>
-              <ListItem style={{ height: '15%' }}>
-                <Grid container item xs={6}>
-                  <Grid item xs={6}>
-                    Hours Studied
-                  </Grid>
-                  <Grid item xs={6}>
-                    Leaderboard Placement
-                  </Grid>
-                  <Grid item xs={6}>
-                    0.9h
-                  </Grid>
-                  <Grid item xs={6}>
-                    #523
-                  </Grid>
-                </Grid>
-              </ListItem>
-              <ListItem style={{ height: '70%' }}>
-                <Grid item xs={8} style={{ height: '100%' }}>
+    <Container maxWidth="lg" style={{ marginTop: '70px' }}>
+      <Grid container spacing={7}>
+        <Grid item xs={8}>
+          <Paper style={{ height: '500px' }}>
+            <Grid container>
+              <Grid item xs={12}>
+                <Box display="flex">
+                  <Box className={classes.chartCard}>
+                    <Typography variant="body1" gutterBottom={true}>
+                      <Box fontWeight="fontWeightBold">Hours Studied</Box>
+                    </Typography>
+                    <Typography variant="body1">0.9h</Typography>
+                  </Box>
+                  <Box className={classes.chartCard}>
+                    <Typography variant="body1" gutterBottom={true}>
+                      <Box fontWeight="fontWeightBold">
+                        Leaderboard Placement
+                      </Box>
+                    </Typography>
+                    <Typography variant="body1">#523</Typography>
+                  </Box>
+                </Box>
+                <div style={{ height: '350px', paddingRight: '20px' }}>
                   {series && (
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={series}
-                        margin={{
-                          top: 5,
-                          right: 30,
-                          left: 20,
-                          bottom: 5,
-                        }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                      <BarChart data={series}>
+                        <CartesianGrid
+                          stroke="#eee"
+                          strokeDasharray="5 3"
+                          vertical={false}
+                        />
                         <XAxis dataKey="date" />
-                        <YAxis />
+                        <YAxis yAxisId="left" orientation="left" />
                         <Tooltip
                           content={
                             // @ts-ignore
                             <CustomTooltipContent />
                           }
+                          cursor={{ fill: '#666' }}
                         />
                         <Bar
+                          yAxisId="left"
                           dataKey="study_time"
-                          fill="#8884d8"
+                          fill="#8a85ff"
                           radius={7}
-                          barSize={20}
+                          barSize={10}
                         />
                       </BarChart>
                     </ResponsiveContainer>
                   )}
-                </Grid>
-              </ListItem>
-              <Divider className={classes.divider} />
-              <ListItem style={{ height: '15%' }}>
-                <Select
-                  value={timeInterval}
-                  className={classes.select}
-                  inputProps={{
-                    classes: {
-                      icon: classes.icon,
-                    },
-                  }}
-                  onChange={(e: any) => {
-                    setTimeInterval(e.target.value)
-                  }}
+                </div>
+              </Grid>
+              <Grid item xs={12}>
+                <Divider className={classes.divider} />
+              </Grid>
+              <Grid item xs={12}>
+                <Box
+                  display="flex"
+                  align-items="center"
+                  marginTop="6px"
+                  marginLeft="20px"
                 >
-                  <MenuItem value="allTime">All Time</MenuItem>
-                  <MenuItem value="pastMonth">Past Month</MenuItem>
-                  <MenuItem value="pastWeek">Past Week</MenuItem>
-                  <MenuItem value="pastDay">Past Day</MenuItem>
-                </Select>
-              </ListItem>
-            </List>
+                  <Select
+                    value={timeInterval}
+                    className={classes.select}
+                    inputProps={{
+                      classes: {
+                        icon: classes.icon,
+                      },
+                    }}
+                    onChange={(e: any) => {
+                      setTimeInterval(e.target.value)
+                    }}
+                  >
+                    <MenuItem value="allTime">All Time</MenuItem>
+                    <MenuItem value="pastMonth">Past Month</MenuItem>
+                    <MenuItem value="pastWeek">Past Week</MenuItem>
+                    <MenuItem value="pastDay">Past Day</MenuItem>
+                  </Select>
+                </Box>
+              </Grid>
+            </Grid>
           </Paper>
         </Grid>
         <Grid item xs={4}>
-          <Paper
-            style={{
-              height: '30vh',
-            }}
-          >
+          <div style={{ height: '500px' }}>
+            {neighbors && (
+              <NeighborLeaderboard
+                leaderboardData={neighbors}
+                history={history}
+                height="500px"
+              />
+            )}
+          </div>
+        </Grid>
+
+        <Grid item xs={4}>
+          <Paper style={{ height: '200px', padding: '30px' }}>
             {userStats && (
-              <div style={{ paddingLeft: '30px' }}>
-                <Typography
-                  variant="h6"
-                  gutterBottom={true}
-                  style={{ paddingTop: '30px' }}
-                >
-                  Study Time
+              <div>
+                <Typography variant="h6" gutterBottom={true}>
+                  <Box fontWeight="fontWeightBold">Study Time</Box>
                 </Typography>
                 <Typography variant="body1">
                   {
@@ -351,20 +365,13 @@ function UserStats() {
           </Paper>
         </Grid>
         <Grid item xs={4}>
-          <Paper
-            style={{
-              height: '30vh',
-            }}
-          >
+          <Paper style={{ height: '200px', padding: '30px' }}>
             {userStats && (
-              <div style={{ paddingLeft: '30px' }}>
-                <Typography
-                  variant="h6"
-                  gutterBottom={true}
-                  style={{ paddingTop: '30px' }}
-                >
-                  Leaderboard Placement
+              <div>
+                <Typography variant="h6" gutterBottom={true}>
+                  <Box fontWeight="fontWeightBold">Leaderboard Placement</Box>
                 </Typography>
+
                 <Typography variant="body1">
                   {
                     // @ts-ignore
@@ -394,32 +401,24 @@ function UserStats() {
           </Paper>
         </Grid>
         <Grid item xs={4}>
-          <Paper
-            style={{
-              height: '30vh',
-            }}
-          >
+          <Paper style={{ height: '200px', padding: '30px' }}>
             {userStats && (
-              <div style={{ paddingLeft: '30px' }}>
-                <Typography
-                  variant="h6"
-                  gutterBottom={true}
-                  style={{ paddingTop: '30px' }}
-                >
-                  Study Role
+              <div>
+                <Typography variant="h6" gutterBottom={true}>
+                  <Box fontWeight="fontWeightBold">Study Role</Box>
                 </Typography>
-                {/*
                 <Typography variant="body1">
+                  Current study role:
                   {
                     // @ts-ignore
-                    `Current study role: @${userStats.roleInfo.role.name}`
+                    ` @${userStats?.roleInfo?.role?.name?.split(' ')[0]}`
                   }
                 </Typography>
-                */}
                 <Typography variant="body1">
+                  Next study role:
                   {
                     // @ts-ignore
-                    `Next study role: @${userStats.roleInfo.next_role.name}`
+                    ` @${userStats?.roleInfo?.next_role?.name?.split(' ')[0]}`
                   }
                 </Typography>
                 <Typography variant="body1">
@@ -428,6 +427,10 @@ function UserStats() {
                     `Role promotion: ${userStats.roleInfo.time_to_next_role}h`
                   }
                 </Typography>
+                {/* <Typography variant="body1">{
+                    // @ts-ignore
+                    `Role rank: ${userStats.roleInfo.time_to_next_role}h`
+                    }</Typography> */}
               </div>
             )}
           </Paper>
@@ -437,4 +440,4 @@ function UserStats() {
   )
 }
 
-export default UserStats
+export default withRouter(UserStats)

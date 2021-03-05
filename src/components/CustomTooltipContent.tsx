@@ -10,7 +10,7 @@ const CustomTooltipContent = ({ active, payload, label }) => {
         style={{
           margin: '0px',
           padding: '10px',
-          backgroundColor: 'rgb(255, 255, 255)',
+          backgroundColor: 'rgb(20, 20, 20)',
           border: '1px solid rgb(204, 204, 204)',
           whiteSpace: 'nowrap',
         }}

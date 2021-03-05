@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
-import {
-  lighten,
-  makeStyles,
-  Theme,
-  createStyles,
-} from '@material-ui/core/styles'
+import { withRouter } from 'react-router-dom'
+import { lighten, makeStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -13,37 +8,25 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
-import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
-import Checkbox from '@material-ui/core/Checkbox'
-import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Switch from '@material-ui/core/Switch'
-import DeleteIcon from '@material-ui/icons/Delete'
-import FilterListIcon from '@material-ui/icons/FilterList'
-import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
-import Button from '@material-ui/core/Button'
 import axios from 'axios'
 import UserSearch from './UserSearch'
-
-/* eslint-disable indent */
 
 const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Username' },
   {
-    id: 'calories',
+    id: 'study_time_minutes',
     numeric: true,
     disablePadding: false,
     label: 'Study Time in Minutes',
   },
   {
-    id: 'fat',
+    id: 'study_time_hours',
     numeric: true,
     disablePadding: false,
     label: 'Study Time in Hours',
@@ -137,7 +120,7 @@ const EnhancedTableToolbar = props => {
   const classes = useToolbarStyles()
 
   return (
-    <Toolbar>
+    <Toolbar disableGutters={true} style={{ paddingLeft: '16px' }}>
       <Typography
         className={classes.title}
         variant="h6"
@@ -147,7 +130,7 @@ const EnhancedTableToolbar = props => {
         Leaderboard
       </Typography>
 
-      <UserSearch />
+      {/* <UserSearch /> */}
     </Toolbar>
   )
 }
@@ -189,11 +172,11 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Leaderboard = () => {
+const Leaderboard = ({ history }) => {
   const classes = useStyles()
   const [page, setPage] = useState(0)
   const [timeFrame, setTimeframe] = React.useState<string>('pastWeek')
-  const [rowsPerPage, setRowsPerPage] = useState(5)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
   const [leaderboardData, setLeaderboardData] = useState<any>({})
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -201,7 +184,7 @@ const Leaderboard = () => {
 
   useEffect(() => {
     axios
-      .get('/leaderboard?offset=0&limit=25&time_interval=pastWeek')
+      .get('/leaderboard?offset=0&limit=200&time_interval=pastWeek')
       .then(response => {
         console.log('Inside!')
         console.log(response.data)
@@ -216,7 +199,7 @@ const Leaderboard = () => {
   useEffect(() => {
     console.log('testestestes')
     axios
-      .get(`/leaderboard?offset=0&limit=25&time_interval=${timeFrame}`)
+      .get(`/leaderboard?offset=0&limit=200&time_interval=${timeFrame}`)
       .then(response => {
         console.log('New time frame')
         console.log(response.data)
@@ -235,7 +218,7 @@ const Leaderboard = () => {
       console.log('New request')
       axios
         .get(
-          `/leaderboard?offset=${leaderboardData.leaderboard.length}&limit=25&time_interval=${timeFrame}`
+          `/leaderboard?offset=${leaderboardData.leaderboard.length}&limit=200&time_interval=${timeFrame}`
         )
         .then(response => {
           console.log(
@@ -270,12 +253,12 @@ const Leaderboard = () => {
   if (loading) return <p>Loading...{loading}</p>
   if (error) return <p>Error :( {error.toString()}</p>
 
-  const emptyRows =
-    rowsPerPage -
-    Math.min(
-      rowsPerPage,
-      leaderboardData?.leaderboard.length - page * rowsPerPage
-    )
+  const emptyRows = 0
+  //     rowsPerPage -
+  //     Math.min(
+  //       rowsPerPage,
+  //       leaderboardData?.leaderboard.length - page * rowsPerPage
+  //     )
 
   return (
     <div className={classes.root}>
@@ -301,6 +284,9 @@ const Leaderboard = () => {
                       role="checkbox"
                       tabIndex={-1}
                       key={row.name}
+                      onClick={() => {
+                        history.push(`users/${row.discord_user_id}`)
+                      }}
                     >
                       <TableCell>{row.rank}</TableCell>
                       {/* padding="checkbox" */}
@@ -344,4 +330,4 @@ const Leaderboard = () => {
   )
 }
 
-export default Leaderboard
+export default withRouter(Leaderboard)

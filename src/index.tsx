@@ -11,6 +11,10 @@ import reportWebVitals from './reportWebVitals'
 const darkTheme = createMuiTheme({
   palette: {
     type: 'dark',
+    background: {
+      default: '#161A1E',
+      paper: '#20232A',
+    },
   },
 })
 
