@@ -73,14 +73,12 @@ const useToolbarStyles = makeStyles(theme => ({
   },
 }))
 
-function ControlledOpenSelect(props) {
+function ControlledOpenSelect({ onChange, timeFrame }) {
   const classes = useStyles()
-  const [timeFrame, setTimeFrame] = React.useState<string>('pastWeek')
   const [open, setOpen] = React.useState(false)
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setTimeFrame(event.target.value as string)
-    props.onChange(event.target.value as string)
+    onChange(event.target.value as string)
   }
 
   const handleClose = () => {
@@ -106,6 +104,7 @@ function ControlledOpenSelect(props) {
           value={timeFrame}
           onChange={handleChange}
         >
+          <MenuItem value="pastDay">Past Day</MenuItem>
           <MenuItem value="pastWeek">Past Week</MenuItem>
           <MenuItem value="pastMonth">Past Month</MenuItem>
           <MenuItem value="pastYear">Past Year</MenuItem>
@@ -176,7 +175,7 @@ const Leaderboard = () => {
   const history = useHistory()
   const classes = useStyles()
   const [page, setPage] = useState(0)
-  const [timeFrame, setTimeframe] = React.useState<string>('pastWeek')
+  const [timeFrame, setTimeframe] = React.useState<string>('pastMonth')
   const [rowsPerPage, setRowsPerPage] = useState(10)
   const [leaderboardData, setLeaderboardData] = useState<any>({})
   const [error, setError] = useState(false)
@@ -185,7 +184,7 @@ const Leaderboard = () => {
 
   useEffect(() => {
     axios
-      .get('/leaderboard?offset=0&limit=200&time_interval=pastWeek')
+      .get(`/leaderboard?offset=0&limit=200&time_interval=${timeFrame}`)
       .then(response => {
         console.log('Inside!')
         console.log(response.data)
@@ -313,7 +312,10 @@ const Leaderboard = () => {
           </Table>
         </TableContainer>
         <div className={classes.tableFooter}>
-          <ControlledOpenSelect onChange={handleTimeFrameChange} />
+          <ControlledOpenSelect
+            onChange={handleTimeFrameChange}
+            timeFrame={timeFrame}
+          />
           <div style={{ flexGrow: 1 }}>
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}

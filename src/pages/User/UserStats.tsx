@@ -262,8 +262,8 @@ function UserStats() {
     })
 
     if (userStats) {
-      setRank(userStats[timeInterval].rank)
-      setStudyTime(userStats[timeInterval].study_time)
+      setRank(userStats.stats[timeInterval].rank)
+      setStudyTime(userStats.stats[timeInterval].study_time)
     }
   }, [timeInterval])
 
@@ -366,10 +366,11 @@ function UserStats() {
                       setTimeInterval(e.target.value)
                     }}
                   >
-                    <MenuItem value="allTime">All Time</MenuItem>
-                    <MenuItem value="pastMonth">Past Month</MenuItem>
-                    <MenuItem value="pastWeek">Past Week</MenuItem>
                     <MenuItem value="pastDay">Past Day</MenuItem>
+                    <MenuItem value="pastWeek">Past Week</MenuItem>
+                    <MenuItem value="pastMonth">Past Month</MenuItem>
+                    <MenuItem value="pastYear">Past Year</MenuItem>
+                    <MenuItem value="allTime">All Time</MenuItem>
                   </Select>
                 </Box>
               </Grid>
