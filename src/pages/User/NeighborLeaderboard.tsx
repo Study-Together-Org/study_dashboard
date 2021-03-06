@@ -35,7 +35,7 @@ const headCells = [
 function EnhancedTableHead(props) {
   return (
     <TableHead>
-      <TableRow style={{ height: '40px' }}>
+      <TableRow style={{ height: '49px' }}>
         {/* checkbox */}
         <TableCell>Rank</TableCell>
         {headCells.map(headCell => (
@@ -148,6 +148,7 @@ const Leaderboard = ({ leaderboardData, height }) => {
             <TableBody>
               {leaderboardData.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`
+                const rowHeight = '41px'
 
                 if (index == 5) {
                   return (
@@ -159,7 +160,7 @@ const Leaderboard = ({ leaderboardData, height }) => {
                       onClick={() => {
                         history.push(`./${row.discord_user_id}`)
                       }}
-                      style={{ height: '40px' }}
+                      style={{ height: rowHeight }}
                     >
                       <TableCell>
                         <Box fontWeight={700}>{row.rank}</Box>
@@ -181,6 +182,39 @@ const Leaderboard = ({ leaderboardData, height }) => {
                   )
                 }
 
+                if (index == 10) {
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={row.name}
+                      onClick={() => {
+                        history.push(`./${row.discord_user_id}`)
+                      }}
+                      style={{ height: rowHeight }}
+                    >
+                      <TableCell style={{ border: 'none' }}>
+                        <Box>{row.rank}</Box>
+                      </TableCell>
+                      {/* padding="checkbox" */}
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
+                        style={{ border: 'none' }}
+                      >
+                        <Box>{row.username}</Box>
+                      </TableCell>
+                      {/* <TableCell align="right">{row.study_time * 60}</TableCell> */}
+                      <TableCell align="right" style={{ border: 'none' }}>
+                        <Box>{row.study_time}</Box>
+                      </TableCell>
+                    </TableRow>
+                  )
+                }
+
                 return (
                   <TableRow
                     hover
@@ -190,7 +224,7 @@ const Leaderboard = ({ leaderboardData, height }) => {
                     onClick={() => {
                       history.push(`./${row.discord_user_id}`)
                     }}
-                    style={{ height: '40px' }}
+                    style={{ height: rowHeight }}
                   >
                     <TableCell>{row.rank}</TableCell>
                     {/* padding="checkbox" */}

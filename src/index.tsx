@@ -16,6 +16,9 @@ const darkTheme = createMuiTheme({
       paper: '#20232A',
     },
   },
+  typography: {
+    fontFamily: ['"Titillium Web"', '"sans-serif"'].join(','),
+  },
 })
 
 ReactDOM.render(
