@@ -14,30 +14,31 @@ import Paper from '@material-ui/core/Paper'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
+import axios from 'axios'
 import { useHistory } from 'react-router'
 
 const headCells = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Username' },
+  { id: 'name', numeric: false, disablePadding: false, label: 'Username' },
+  { id: 'tag', numeric: false, disablePadding: true, label: 'Tag' },
   /* { */
   /* id: 'study_time_minutes', */
   /* numeric: true, */
   /* disablePadding: false, */
   /* label: 'Study Time in Minutes', */
   /* }, */
-  {
-    id: 'study_time_hours',
-    numeric: true,
-    disablePadding: false,
-    label: 'Study Time in Hours',
-  },
+  /* {
+   *   id: 'study_time_hours',
+   *   numeric: true,
+   *   disablePadding: false,
+   *   label: 'Study Time in Hours',
+   * }, */
 ]
 
 function EnhancedTableHead(props) {
   return (
     <TableHead>
-      <TableRow style={{ height: '40px' }}>
+      <TableRow style={{ height: '50px' }}>
         {/* checkbox */}
-        <TableCell>Rank</TableCell>
         {headCells.map(headCell => (
           <TableCell
             key={headCell.id}
@@ -149,38 +150,6 @@ const Leaderboard = ({ leaderboardData, height }) => {
               {leaderboardData.map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`
 
-                if (index == 5) {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.name}
-                      onClick={() => {
-                        history.push(`./${row.discord_user_id}`)
-                      }}
-                      style={{ height: '40px' }}
-                    >
-                      <TableCell>
-                        <Box fontWeight={700}>{row.rank}</Box>
-                      </TableCell>
-                      {/* padding="checkbox" */}
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        <Box fontWeight={700}>{row.username}</Box>
-                      </TableCell>
-                      {/* <TableCell align="right">{row.study_time * 60}</TableCell> */}
-                      <TableCell align="right">
-                        <Box fontWeight={700}>{row.study_time}</Box>
-                      </TableCell>
-                    </TableRow>
-                  )
-                }
-
                 return (
                   <TableRow
                     hover
@@ -188,11 +157,11 @@ const Leaderboard = ({ leaderboardData, height }) => {
                     tabIndex={-1}
                     key={row.name}
                     onClick={() => {
-                      history.push(`./${row.discord_user_id}`)
+                      history.push(`./users/${row.discord_user_id}`)
                     }}
                     style={{ height: '40px' }}
                   >
-                    <TableCell>{row.rank}</TableCell>
+                    <TableCell>{row.username}</TableCell>
                     {/* padding="checkbox" */}
                     <TableCell
                       component="th"
@@ -200,10 +169,10 @@ const Leaderboard = ({ leaderboardData, height }) => {
                       scope="row"
                       padding="none"
                     >
-                      {row.username}
+                      {row.tag}
                     </TableCell>
                     {/* <TableCell align="right">{row.study_time * 60}</TableCell> */}
-                    <TableCell align="right">{row.study_time}</TableCell>
+                    {/* <TableCell align="right">{row.study_time}</TableCell> */}
                   </TableRow>
                 )
               })}

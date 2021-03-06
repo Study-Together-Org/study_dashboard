@@ -41,9 +41,14 @@ function App() {
           {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />
               </IconButton> */}
-          <Typography variant="h6" className={classes.title}>
-            <Box fontWeight="fontWeightBold">Study Together</Box>
-          </Typography>
+          <div className={classes.title}>
+            <Button component={Link} to="/" className={classes.navButton}>
+              <Typography variant="h6" className={classes.title}>
+                <Box fontWeight="fontWeightBold">Study Together</Box>
+              </Typography>
+            </Button>
+          </div>
+
           {/* <Typography>Leaderboard</Typography>
               <Typography>Leaderboard</Typography>
               <Typography>Leaderboard</Typography> */}
