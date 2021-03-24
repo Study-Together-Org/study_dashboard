@@ -147,35 +147,36 @@ const Leaderboard = ({ leaderboardData, height }) => {
           >
             <EnhancedTableHead />
             <TableBody>
-              {leaderboardData.map((row, index) => {
-                const labelId = `enhanced-table-checkbox-${index}`
+              {leaderboardData &&
+                leaderboardData.map((row, index) => {
+                  const labelId = `enhanced-table-checkbox-${index}`
 
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={row.name}
-                    onClick={() => {
-                      history.push(`./users/${row.discord_user_id}`)
-                    }}
-                    style={{ height: '40px' }}
-                  >
-                    <TableCell>{row.username}</TableCell>
-                    {/* padding="checkbox" */}
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={row.name}
+                      onClick={() => {
+                        history.push(`./users/${row.discord_user_id}`)
+                      }}
+                      style={{ height: '40px' }}
                     >
-                      {row.tag}
-                    </TableCell>
-                    {/* <TableCell align="right">{row.study_time * 60}</TableCell> */}
-                    {/* <TableCell align="right">{row.study_time}</TableCell> */}
-                  </TableRow>
-                )
-              })}
+                      <TableCell>{row.username}</TableCell>
+                      {/* padding="checkbox" */}
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
+                      >
+                        {row.tag}
+                      </TableCell>
+                      {/* <TableCell align="right">{row.study_time * 60}</TableCell> */}
+                      {/* <TableCell align="right">{row.study_time}</TableCell> */}
+                    </TableRow>
+                  )
+                })}
             </TableBody>
           </Table>
         </TableContainer>

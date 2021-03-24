@@ -6,7 +6,7 @@ import Leaderboard from './Leaderboard'
 function UserPage() {
   return (
     <Container maxWidth="lg">
-      <Box my={4}>
+      <Box my={15}>
         <Leaderboard />
       </Box>
     </Container>

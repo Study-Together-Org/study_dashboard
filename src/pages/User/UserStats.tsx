@@ -380,7 +380,11 @@ function UserStats() {
         <Grid item xs={4}>
           <div style={{ height: '500px' }}>
             {neighbors && (
-              <NeighborLeaderboard leaderboardData={neighbors} height="500px" />
+              <NeighborLeaderboard
+                leaderboardData={neighbors}
+                userId={userId}
+                height="500px"
+              />
             )}
           </div>
         </Grid>

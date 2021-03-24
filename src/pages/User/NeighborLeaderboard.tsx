@@ -124,7 +124,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-const Leaderboard = ({ leaderboardData, height }) => {
+const Leaderboard = ({ leaderboardData, height, userId }) => {
   const history = useHistory()
   const classes = useStyles()
   const [error, setError] = useState(false)
@@ -150,7 +150,7 @@ const Leaderboard = ({ leaderboardData, height }) => {
                 const labelId = `enhanced-table-checkbox-${index}`
                 const rowHeight = '41px'
 
-                if (index == 5) {
+                if (row.discord_user_id == userId) {
                   return (
                     <TableRow
                       hover
@@ -172,7 +172,11 @@ const Leaderboard = ({ leaderboardData, height }) => {
                         scope="row"
                         padding="none"
                       >
-                        <Box fontWeight={700}>{row.username}</Box>
+                        <Box fontWeight={700}>
+                          {row.username.length < 18
+                            ? row.username
+                            : row.username.substring(0, 18) + '...'}
+                        </Box>
                       </TableCell>
                       {/* <TableCell align="right">{row.study_time * 60}</TableCell> */}
                       <TableCell align="right">
@@ -205,7 +209,11 @@ const Leaderboard = ({ leaderboardData, height }) => {
                         padding="none"
                         style={{ border: 'none' }}
                       >
-                        <Box>{row.username}</Box>
+                        <Box>
+                          {row.username.length < 18
+                            ? row.username
+                            : row.username.substring(0, 18) + '...'}
+                        </Box>
                       </TableCell>
                       {/* <TableCell align="right">{row.study_time * 60}</TableCell> */}
                       <TableCell align="right" style={{ border: 'none' }}>
@@ -234,7 +242,9 @@ const Leaderboard = ({ leaderboardData, height }) => {
                       scope="row"
                       padding="none"
                     >
-                      {row.username}
+                      {row.username.length < 18
+                        ? row.username
+                        : row.username.substring(0, 18) + '...'}
                     </TableCell>
                     {/* <TableCell align="right">{row.study_time * 60}</TableCell> */}
                     <TableCell align="right">{row.study_time}</TableCell>

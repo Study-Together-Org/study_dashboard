@@ -15,7 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import axios from 'axios'
-import UserSearch from './UserSearch'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Username' },
@@ -250,18 +250,25 @@ const Leaderboard = () => {
     console.log(timeFrame, 'changed')
   }
 
-  if (loading) return <p>Loading...{loading}</p>
+  // if (loading) return <p>Loading...{loading}</p>
+
   if (error) return <p>Error :( {error.toString()}</p>
 
   const emptyRows = 0
-  //     rowsPerPage -
-  //     Math.min(
-  //       rowsPerPage,
-  //       leaderboardData?.leaderboard.length - page * rowsPerPage
-  //     )
 
   return (
     <div className={classes.root}>
+      {loading && (
+        <CircularProgress
+          style={{
+            position: 'absolute',
+            top: '40%',
+            left: 0,
+            right: 0,
+            margin: 'auto',
+          }}
+        />
+      )}
       <Paper className={classes.paper}>
         <EnhancedTableToolbar />
         <TableContainer>
@@ -272,43 +279,49 @@ const Leaderboard = () => {
             aria-label="enhanced table"
           >
             <EnhancedTableHead />
-            <TableBody>
-              {leaderboardData.leaderboard
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`
+            {loading ? (
+              <div style={{ height: '530px' }}></div>
+            ) : (
+              <TableBody>
+                {leaderboardData.leaderboard
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => {
+                    const labelId = `enhanced-table-checkbox-${index}`
 
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.name}
-                      onClick={() => {
-                        history.push(`users/${row.discord_user_id}`)
-                      }}
-                    >
-                      <TableCell>{row.rank}</TableCell>
-                      {/* padding="checkbox" */}
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={row.name}
+                        onClick={() => {
+                          history.push(`users/${row.discord_user_id}`)
+                        }}
                       >
-                        {row.username}
-                      </TableCell>
-                      <TableCell align="right">{row.study_time * 60}</TableCell>
-                      <TableCell align="right">{row.study_time}</TableCell>
-                    </TableRow>
-                  )
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
+                        <TableCell>{row.rank}</TableCell>
+                        {/* padding="checkbox" */}
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="none"
+                        >
+                          {row.username}
+                        </TableCell>
+                        <TableCell align="right">
+                          {row.study_time * 60}
+                        </TableCell>
+                        <TableCell align="right">{row.study_time}</TableCell>
+                      </TableRow>
+                    )
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 53 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            )}
           </Table>
         </TableContainer>
         <div className={classes.tableFooter}>
@@ -320,7 +333,7 @@ const Leaderboard = () => {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={leaderboardData.num_users}
+              count={leaderboardData.num_users || '...'}
               rowsPerPage={rowsPerPage}
               page={page}
               onChangePage={handleChangePage}

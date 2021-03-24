@@ -60,6 +60,13 @@ const UserSearch = () => {
         setLoading(false)
       })
   }
+
+  const keyPress = e => {
+    if (e.keyCode == 13) {
+      handleSearch()
+    }
+  }
+
   return (
     <Container maxWidth="xs" style={{ marginTop: '150px' }}>
       <TextField
@@ -67,6 +74,7 @@ const UserSearch = () => {
         label="Search for a user..."
         variant="outlined"
         value={value}
+        onKeyDown={keyPress}
         onChange={handleChange}
         style={{ width: '100%', marginBottom: '50px' }}
         InputProps={{
