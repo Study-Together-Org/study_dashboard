@@ -7,17 +7,29 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import { Shadows } from '@material-ui/core/styles/shadows'
 
 const darkTheme = createMuiTheme({
-  palette: {
-    type: 'dark',
-    background: {
-      default: '#161A1E',
-      paper: '#20232A',
-    },
-  },
+  // palette: {
+  //   type: 'dark',
+  //   background: {
+  //     default: '#161A1E',
+  //     paper: '#20232A',
+  //   },
+  // },
   typography: {
     fontFamily: ['"Titillium Web"', '"sans-serif"'].join(','),
+  },
+  shape: {
+    borderRadius: 16,
+  },
+  overrides: {
+    MuiPaper: {
+      root: {
+        'box-shadow':
+          '0px 1px 2px rgba(0, 0, 0, 0.12), 0px 0px 0px 1px rgba(0, 0, 0, 0.05) !important',
+      },
+    },
   },
 })
 

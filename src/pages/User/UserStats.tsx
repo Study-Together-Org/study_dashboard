@@ -207,19 +207,30 @@ const useStyles = makeStyles(theme => ({
     /* fill: 'white', */
   },
   select: {
-    // '&:before': {
-    //   borderColor: 'white',
-    // },
-    // '&:after': {
-    //   borderColor: 'white',
-    // },
+    '&:before': {
+      borderColor: 'white !important',
+    },
+    '&:after': {
+      borderColor: 'white !important',
+    },
   },
   chartCard: {
     height: '100px',
     padding: '20px',
     lineHeight: '25px',
   },
+  infoCard: {
+    height: '180px',
+    padding: '20px',
+  },
 }))
+
+const timeIntervalToDays = {
+  pastDay: 1,
+  pastWeek: 7,
+  pastMonth: 30,
+  allTime: 60,
+}
 
 function UserStats() {
   const history = useHistory()
@@ -262,6 +273,7 @@ function UserStats() {
     })
 
     if (userStats) {
+      console.log(timeInterval)
       setRank(userStats.stats[timeInterval].rank)
       setStudyTime(userStats.stats[timeInterval].study_time)
     }
@@ -284,7 +296,7 @@ function UserStats() {
 
   return (
     <Container maxWidth="lg" style={{ marginTop: '70px' }}>
-      <Grid container spacing={7}>
+      <Grid container spacing={3}>
         <Grid item xs={8}>
           <Paper style={{ height: '500px' }}>
             <Grid container>
@@ -301,17 +313,27 @@ function UserStats() {
 
                   <Box className={classes.chartCard}>
                     <Typography variant="body1" gutterBottom={true}>
+                      <Box fontWeight="fontWeightBold">
+                        Leaderboard Placement
+                      </Box>
+                    </Typography>
+                    <Typography variant="body1">#{rank}</Typography>
+                  </Box>
+                  <Box className={classes.chartCard}>
+                    <Typography variant="body1" gutterBottom={true}>
                       <Box fontWeight="fontWeightBold">Hours Studied</Box>
                     </Typography>
                     <Typography variant="body1">{studyTime}</Typography>
                   </Box>
                   <Box className={classes.chartCard}>
                     <Typography variant="body1" gutterBottom={true}>
-                      <Box fontWeight="fontWeightBold">
-                        Leaderboard Placement
-                      </Box>
+                      <Box fontWeight="fontWeightBold">Average / day</Box>
                     </Typography>
-                    <Typography variant="body1">#{rank}</Typography>
+                    <Typography variant="body1">
+                      {(studyTime / timeIntervalToDays[timeInterval]).toFixed(
+                        2
+                      )}
+                    </Typography>
                   </Box>
                 </Box>
                 <div style={{ height: '350px', paddingRight: '20px' }}>
@@ -355,6 +377,7 @@ function UserStats() {
                   marginLeft="20px"
                 >
                   <Select
+                    style={{ height: '35px' }}
                     value={timeInterval}
                     className={classes.select}
                     inputProps={{
@@ -369,8 +392,7 @@ function UserStats() {
                     <MenuItem value="pastDay">Past Day</MenuItem>
                     <MenuItem value="pastWeek">Past Week</MenuItem>
                     <MenuItem value="pastMonth">Past Month</MenuItem>
-                    <MenuItem value="pastYear">Past Year</MenuItem>
-                    <MenuItem value="allTime">All Time</MenuItem>
+                    {/* <MenuItem value="allTime">All Time</MenuItem> */}
                   </Select>
                 </Box>
               </Grid>
@@ -390,7 +412,7 @@ function UserStats() {
         </Grid>
 
         <Grid item xs={4}>
-          <Paper style={{ height: '200px', padding: '30px' }}>
+          <Paper className={classes.infoCard}>
             {userStats && (
               <div>
                 <Typography variant="h6" gutterBottom={true}>
@@ -425,7 +447,7 @@ function UserStats() {
           </Paper>
         </Grid>
         <Grid item xs={4}>
-          <Paper style={{ height: '200px', padding: '30px' }}>
+          <Paper className={classes.infoCard}>
             {userStats && (
               <div>
                 <Typography variant="h6" gutterBottom={true}>
@@ -461,7 +483,7 @@ function UserStats() {
           </Paper>
         </Grid>
         <Grid item xs={4}>
-          <Paper style={{ height: '200px', padding: '30px' }}>
+          <Paper className={classes.infoCard}>
             {userStats && (
               <div>
                 <Typography variant="h6" gutterBottom={true}>
@@ -474,6 +496,7 @@ function UserStats() {
                     ` @${userStats?.roleInfo?.role?.name?.split(' ')[0]}`
                   }
                 </Typography>
+
                 <Typography variant="body1">
                   Next study role:
                   {
@@ -481,6 +504,14 @@ function UserStats() {
                     ` @${userStats?.roleInfo?.next_role?.name?.split(' ')[0]}`
                   }
                 </Typography>
+                <Typography variant="body1">
+                  Role Rank:
+                  {
+                    // @ts-ignore
+                    ` 5/11`
+                  }
+                </Typography>
+
                 <Typography variant="body1">
                   {
                     // @ts-ignore

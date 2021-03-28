@@ -27,8 +27,11 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'none',
     margin: '0px 10px',
     fontSize: '16px',
+    color: 'white',
   },
 }))
+
+// style={{ backgroundColor: '#20232A' }}
 
 function App() {
   const classes = useStyles()
@@ -37,7 +40,7 @@ function App() {
   return (
     <div className="{classes.root}">
       <AppBar position="static">
-        <Toolbar style={{ backgroundColor: '#20232A' }}>
+        <Toolbar>
           {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />
               </IconButton> */}
