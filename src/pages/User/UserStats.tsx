@@ -11,6 +11,7 @@ import Divider from '@material-ui/core/Divider'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import NeighborLeaderboard from './NeighborLeaderboard'
+import PersonalStatsTable from './PersonalStatsTable'
 import { makeStyles } from '@material-ui/core/styles'
 import { useParams } from 'react-router-dom'
 import Box from '@material-ui/core/Box'
@@ -220,8 +221,8 @@ const useStyles = makeStyles(theme => ({
     lineHeight: '25px',
   },
   infoCard: {
-    height: '180px',
-    padding: '20px',
+    height: '213px',
+    padding: '16px',
   },
 }))
 
@@ -411,78 +412,7 @@ function UserStats() {
           </div>
         </Grid>
 
-        <Grid item xs={4}>
-          <Paper className={classes.infoCard}>
-            {userStats && (
-              <div>
-                <Typography variant="h6" gutterBottom={true}>
-                  <Box fontWeight="fontWeightBold">Study Time</Box>
-                </Typography>
-                <Typography variant="body1">
-                  {
-                    // @ts-ignore
-                    `All time: ${userStats.stats.all_time.study_time} h`
-                  }
-                </Typography>
-                <Typography variant="body1">
-                  {
-                    // @ts-ignore
-                    `Monthly: ${userStats.stats.pastMonth.study_time} h`
-                  }
-                </Typography>
-                <Typography variant="body1">
-                  {
-                    // @ts-ignore
-                    `Past 7d: ${userStats.stats.pastWeek.study_time} h`
-                  }
-                </Typography>
-                <Typography variant="body1">
-                  {
-                    // @ts-ignore
-                    `Past 24h: ${userStats.stats.pastDay.study_time} h`
-                  }
-                </Typography>
-              </div>
-            )}
-          </Paper>
-        </Grid>
-        <Grid item xs={4}>
-          <Paper className={classes.infoCard}>
-            {userStats && (
-              <div>
-                <Typography variant="h6" gutterBottom={true}>
-                  <Box fontWeight="fontWeightBold">Leaderboard Placement</Box>
-                </Typography>
-
-                <Typography variant="body1">
-                  {
-                    // @ts-ignore
-                    `All time: #${userStats.stats.all_time.rank}`
-                  }
-                </Typography>
-                <Typography variant="body1">
-                  {
-                    // @ts-ignore
-                    `Monthly: #${userStats.stats.pastMonth.rank}`
-                  }
-                </Typography>
-                <Typography variant="body1">
-                  {
-                    // @ts-ignore
-                    `Past 7d: #${userStats.stats.pastWeek.rank}`
-                  }
-                </Typography>
-                <Typography variant="body1">
-                  {
-                    // @ts-ignore
-                    `Past 24h: #${userStats.stats.pastDay.rank}`
-                  }
-                </Typography>
-              </div>
-            )}
-          </Paper>
-        </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={8}>
           <Paper className={classes.infoCard}>
             {userStats && (
               <div>
@@ -518,6 +448,20 @@ function UserStats() {
                     `Role promotion: ${userStats.roleInfo.time_to_next_role}h`
                   }
                 </Typography>
+                <Typography variant="body1">
+                  {
+                    // @ts-ignore
+                    `Current Study Streak: ${userStats.stats.currentStreak}`
+                  }
+                </Typography>
+
+                <Typography variant="body1">
+                  {
+                    // @ts-ignore
+                    `Longest Study Streak: ${userStats.stats.longestStreak}`
+                  }
+                </Typography>
+
                 {/* <Typography variant="body1">{
                     // @ts-ignore
                     `Role rank: ${userStats.roleInfo.time_to_next_role}h`
@@ -526,6 +470,105 @@ function UserStats() {
             )}
           </Paper>
         </Grid>
+
+        <Grid item xs={4}>
+          <div style={{ height: '213px' }}>
+            {userStats && (
+              <PersonalStatsTable
+                leaderboardData={[
+                  {
+                    time_frame: 'Past Day',
+                    ...userStats.stats['pastDay'],
+                  },
+                  {
+                    time_frame: 'Past Week',
+                    ...userStats.stats['pastWeek'],
+                  },
+
+                  {
+                    time_frame: 'Past Month',
+                    ...userStats.stats['pastMonth'],
+                  },
+
+                  {
+                    time_frame: 'All Time',
+                    ...userStats.stats['all_time'],
+                  },
+                ]}
+                height="213px"
+              />
+            )}
+          </div>
+          {/* <Paper className={classes.infoCard}>
+              {userStats && (
+              <div>
+              <Typography variant="h6" gutterBottom={true}>
+              <Box fontWeight="fontWeightBold">Study Time</Box>
+              </Typography>
+              <Typography variant="body1">
+              {
+              // @ts-ignore
+              `All time: ${userStats.stats.all_time.study_time} h`
+              }
+              </Typography>
+              <Typography variant="body1">
+              {
+              // @ts-ignore
+              `Monthly: ${userStats.stats.pastMonth.study_time} h`
+              }
+              </Typography>
+              <Typography variant="body1">
+              {
+              // @ts-ignore
+              `Past 7d: ${userStats.stats.pastWeek.study_time} h`
+              }
+              </Typography>
+              <Typography variant="body1">
+              {
+              // @ts-ignore
+              `Past 24h: ${userStats.stats.pastDay.study_time} h`
+              }
+              </Typography>
+              </div>
+              )}
+              </Paper> */}
+        </Grid>
+        {/* <Grid item xs={4}>
+            <Paper className={classes.infoCard}>
+            {userStats && (
+            <div>
+            <Typography variant="h6" gutterBottom={true}>
+            <Box fontWeight="fontWeightBold">Leaderboard Placement</Box>
+            </Typography>
+
+            <Typography variant="body1">
+            {
+            // @ts-ignore
+            `All time: #${userStats.stats.all_time.rank}`
+            }
+            </Typography>
+            <Typography variant="body1">
+            {
+            // @ts-ignore
+            `Monthly: #${userStats.stats.pastMonth.rank}`
+            }
+            </Typography>
+            <Typography variant="body1">
+            {
+            // @ts-ignore
+            `Past 7d: #${userStats.stats.pastWeek.rank}`
+            }
+            </Typography>
+            <Typography variant="body1">
+            {
+            // @ts-ignore
+            `Past 24h: #${userStats.stats.pastDay.rank}`
+            }
+            </Typography>
+            </div>
+            )}
+            </Paper>
+            </Grid> */}
       </Grid>
     </Container>
   )

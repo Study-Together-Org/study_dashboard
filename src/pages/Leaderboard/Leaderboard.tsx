@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router'
 import { lighten, makeStyles } from '@material-ui/core/styles'
+import Box from '@material-ui/core/Box'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -103,6 +104,7 @@ function ControlledOpenSelect({ onChange, timeFrame }) {
           onOpen={handleOpen}
           value={timeFrame}
           onChange={handleChange}
+          className={classes.select}
         >
           <MenuItem value="pastDay">Past Day</MenuItem>
           <MenuItem value="pastWeek">Past Week</MenuItem>
@@ -126,7 +128,7 @@ const EnhancedTableToolbar = props => {
         id="tableTitle"
         component="div"
       >
-        Leaderboard
+        <Box fontWeight={700}>Leaderboard</Box>
       </Typography>
 
       {/* <UserSearch /> */}
@@ -143,7 +145,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: 750,
+    minWidth: 550,
   },
   visuallyHidden: {
     border: 0,
@@ -168,6 +170,14 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  select: {
+    '&:before': {
+      borderColor: 'white !important',
+    },
+    '&:after': {
+      borderColor: 'white !important',
+    },
   },
 }))
 
