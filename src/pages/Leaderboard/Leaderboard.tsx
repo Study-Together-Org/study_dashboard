@@ -109,7 +109,6 @@ function ControlledOpenSelect({ onChange, timeFrame }) {
           <MenuItem value="pastDay">Past Day</MenuItem>
           <MenuItem value="pastWeek">Past Week</MenuItem>
           <MenuItem value="pastMonth">Past Month</MenuItem>
-          <MenuItem value="pastYear">Past Year</MenuItem>
           <MenuItem value="allTime">All time</MenuItem>
         </Select>
       </FormControl>

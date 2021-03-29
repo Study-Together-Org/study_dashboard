@@ -84,7 +84,7 @@ interface UserStats {
     pastDay: TimeStats
     pastWeek: TimeStats
     pastMonth: TimeStats
-    all_time: TimeStats
+    allTime: TimeStats
     average_per_day: number
     currentStreak: number
     longestStreak: number
@@ -353,7 +353,7 @@ function UserStats() {
                             // @ts-ignore
                             <CustomTooltipContent />
                           }
-                          cursor={{ fill: '#666' }}
+                          cursor={{ fill: '#E0E0E0' }}
                         />
                         <Bar
                           yAxisId="left"
@@ -492,7 +492,7 @@ function UserStats() {
 
                   {
                     time_frame: 'All Time',
-                    ...userStats.stats['all_time'],
+                    ...userStats.stats['allTime'],
                   },
                 ]}
                 height="213px"
@@ -508,7 +508,7 @@ function UserStats() {
               <Typography variant="body1">
               {
               // @ts-ignore
-              `All time: ${userStats.stats.all_time.study_time} h`
+              `All time: ${userStats.stats.allTime.study_time} h`
               }
               </Typography>
               <Typography variant="body1">
@@ -544,7 +544,7 @@ function UserStats() {
             <Typography variant="body1">
             {
             // @ts-ignore
-            `All time: #${userStats.stats.all_time.rank}`
+            `All time: #${userStats.stats.allTime.rank}`
             }
             </Typography>
             <Typography variant="body1">
