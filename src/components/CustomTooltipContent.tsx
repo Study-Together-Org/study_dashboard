@@ -17,8 +17,11 @@ const CustomTooltipContent = ({ active, payload, label }) => {
             'rgba(0, 0, 0, 0.12) 0px 1px 2px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px',
         }}
       >
-        <p className="recharts-tooltip-label" style={{ margin: '0px' }}>
-          {label}
+        <p
+          className="recharts-tooltip-label"
+          style={{ color: 'black', fontWeight: 500, margin: '0px' }}
+        >
+          {`Date: ${label}`}
         </p>
         <ul
           className="recharts-tooltip-item-list"
@@ -44,7 +47,6 @@ const CustomTooltipContent = ({ active, payload, label }) => {
             className="recharts-tooltip-item"
             style={{
               display: 'block',
-              paddingTop: '4px',
               paddingBottom: '4px',
               color: 'rgb(136, 132, 216)',
             }}
