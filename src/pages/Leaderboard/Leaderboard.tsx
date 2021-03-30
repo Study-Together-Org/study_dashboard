@@ -305,6 +305,7 @@ const Leaderboard = () => {
                         onClick={() => {
                           history.push(`users/${row.discord_user_id}`)
                         }}
+                        style={{ cursor: 'pointer' }}
                       >
                         <TableCell>{row.rank}</TableCell>
                         {/* padding="checkbox" */}

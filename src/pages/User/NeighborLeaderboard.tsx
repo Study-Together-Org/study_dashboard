@@ -35,7 +35,7 @@ const headCells = [
 function EnhancedTableHead(props) {
   return (
     <TableHead>
-      <TableRow style={{ height: '49px' }}>
+      <TableRow style={{ height: '49px', cursor: 'pointer' }}>
         {/* checkbox */}
         <TableCell>Rank</TableCell>
         {headCells.map(headCell => (

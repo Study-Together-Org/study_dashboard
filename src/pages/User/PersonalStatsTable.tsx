@@ -157,9 +157,6 @@ const Leaderboard = ({ leaderboardData, height }) => {
                     role="checkbox"
                     tabIndex={-1}
                     key={row.name}
-                    onClick={() => {
-                      history.push(`./${row.discord_user_id}`)
-                    }}
                     style={{ height: rowHeight }}
                   >
                     <TableCell>
