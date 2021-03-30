@@ -317,7 +317,7 @@ const Leaderboard = () => {
                           {row.username}
                         </TableCell>
                         <TableCell align="right">
-                          {row.study_time * 60}
+                          {Math.round(row.study_time * 60)}
                         </TableCell>
                         <TableCell align="right">{row.study_time}</TableCell>
                       </TableRow>
