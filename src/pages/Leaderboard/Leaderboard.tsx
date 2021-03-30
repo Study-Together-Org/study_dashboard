@@ -189,16 +189,14 @@ const Leaderboard = () => {
   const [leaderboardData, setLeaderboardData] = useState<any>({})
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [backgroundLoading, setBackgroundLoading] = useState(false)
   let timeFrameChange = false
 
   useEffect(() => {
     axios
       .get(`/leaderboard?offset=0&limit=200&time_interval=${timeFrame}`)
       .then(response => {
-        console.log('Inside!')
-        console.log(response.data)
-        // console.log(response.data.json());
-        console.log('Setting loading to false')
+        console.log('Initial leaderboard fetch complete')
         setLeaderboardData(response.data)
         setLoading(false)
       })
@@ -206,14 +204,10 @@ const Leaderboard = () => {
   }, [])
 
   useEffect(() => {
-    console.log('testestestes')
+    setLoading(true)
     axios
       .get(`/leaderboard?offset=0&limit=200&time_interval=${timeFrame}`)
       .then(response => {
-        console.log('New time frame')
-        console.log(response.data)
-        // console.log(response.data.json());
-        console.log('Setting loading to false')
         setLeaderboardData(response.data)
         setLoading(false)
         setPage(0)
@@ -223,29 +217,34 @@ const Leaderboard = () => {
 
   useEffect(() => {
     if (Object.keys(leaderboardData).length === 0) return
-    if (leaderboardData?.leaderboard.length < page * 10) {
-      console.log('New request')
+    if (
+      !backgroundLoading &&
+      leaderboardData?.leaderboard.length < page * rowsPerPage * 5
+    ) {
+      setBackgroundLoading(true)
       axios
         .get(
           `/leaderboard?offset=${leaderboardData.leaderboard.length}&limit=200&time_interval=${timeFrame}`
         )
         .then(response => {
-          console.log(
-            leaderboardData.leaderboard.concat(response.data.leaderboard)
-          )
           setLeaderboardData({
             leaderboard: leaderboardData.leaderboard.concat(
               response.data.leaderboard
             ),
             num_users: response.data.num_users,
           })
+          setBackgroundLoading(false)
         })
-        .catch(err => {})
+        .catch(err => {
+          setBackgroundLoading(false)
+        })
     }
   }, [page])
 
   const handleChangePage = (event, newPage) => {
-    setPage(newPage)
+    if (!loading) {
+      setPage(newPage)
+    }
   }
 
   const handleChangeRowsPerPage = event => {
