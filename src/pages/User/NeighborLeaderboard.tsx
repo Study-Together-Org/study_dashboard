@@ -35,7 +35,7 @@ const headCells = [
 function EnhancedTableHead(props) {
   return (
     <TableHead>
-      <TableRow style={{ height: '49px', cursor: 'pointer' }}>
+      <TableRow style={{ height: '49px' }}>
         {/* checkbox */}
         <TableCell>Rank</TableCell>
         {headCells.map(headCell => (
@@ -160,7 +160,7 @@ const Leaderboard = ({ leaderboardData, height, userId }) => {
                       onClick={() => {
                         history.push(`./${row.discord_user_id}`)
                       }}
-                      style={{ height: rowHeight }}
+                      style={{ height: rowHeight, cursor: 'pointer' }}
                     >
                       <TableCell>
                         <Box fontWeight={700}>{row.rank}</Box>
@@ -196,7 +196,7 @@ const Leaderboard = ({ leaderboardData, height, userId }) => {
                       onClick={() => {
                         history.push(`./${row.discord_user_id}`)
                       }}
-                      style={{ height: rowHeight }}
+                      style={{ height: rowHeight, cursor: 'pointer' }}
                     >
                       <TableCell style={{ border: 'none' }}>
                         <Box>{row.rank}</Box>
@@ -232,7 +232,7 @@ const Leaderboard = ({ leaderboardData, height, userId }) => {
                     onClick={() => {
                       history.push(`./${row.discord_user_id}`)
                     }}
-                    style={{ height: rowHeight }}
+                    style={{ height: rowHeight, cursor: 'pointer' }}
                   >
                     <TableCell>{row.rank}</TableCell>
                     {/* padding="checkbox" */}
