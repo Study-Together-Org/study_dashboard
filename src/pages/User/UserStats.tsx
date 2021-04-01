@@ -316,7 +316,7 @@ function UserStats() {
                   Current study role:
                   {
                     // @ts-ignore
-                    ` @${userStats?.roleInfo?.role?.name?.split(' ')[0]}`
+                    ` @${userStats?.roleInfo?.role?.name}`
                   }
                 </Typography>
 
@@ -324,7 +324,10 @@ function UserStats() {
                   Next study role:
                   {
                     // @ts-ignore
-                    ` @${userStats?.roleInfo?.next_role?.name?.split(' ')[0]}`
+                    userStats?.roleInfo?.role?.name ==
+                    userStats?.roleInfo?.next_role?.name
+                      ? '👑 Highest Role Reached'
+                      : ` @${userStats?.roleInfo?.next_role?.name}`
                   }
                 </Typography>
                 <Typography variant="body1">
