@@ -338,20 +338,20 @@ function UserStats() {
                 <Typography variant="body1">
                   {
                     // @ts-ignore
-                    `Role promotion: ${userStats.roleInfo.time_to_next_role}h`
+                    `Role promotion in: ${userStats.roleInfo.time_to_next_role}h`
                   }
                 </Typography>
                 <Typography variant="body1">
                   {
                     // @ts-ignore
-                    `Current Study Streak: ${userStats.stats.currentStreak}`
+                    `Current Study Streak: ${userStats.stats.currentStreak} days`
                   }
                 </Typography>
 
                 <Typography variant="body1">
                   {
                     // @ts-ignore
-                    `Longest Study Streak: ${userStats.stats.longestStreak}`
+                    `Longest Study Streak: ${userStats.stats.longestStreak} days`
                   }
                 </Typography>
               </div>
