@@ -129,8 +129,6 @@ const EnhancedTableToolbar = props => {
       >
         <Box fontWeight={700}>Leaderboard</Box>
       </Typography>
-
-      {/* <UserSearch /> */}
     </Toolbar>
   )
 }

@@ -14,6 +14,7 @@ import NeighborLeaderboard from './NeighborLeaderboard'
 import PersonalStatsTable from './PersonalStatsTable'
 import { makeStyles } from '@material-ui/core/styles'
 import { useParams } from 'react-router-dom'
+import SimpleTable from '../../components/SimpleTable'
 import Box from '@material-ui/core/Box'
 import {
   BarChart,
@@ -30,37 +31,6 @@ import {
 import axios from 'axios'
 
 import CustomTooltipContent from '../../components/CustomTooltipContent'
-
-const testData = [
-  {
-    date: 'Feb',
-    hours: 100,
-  },
-  {
-    date: 'Mar',
-    hours: 2210,
-  },
-  {
-    date: 'Apr',
-    hours: 2290,
-  },
-  {
-    date: 'May',
-    hours: 2000,
-  },
-  {
-    date: 'Jun',
-    hours: 2181,
-  },
-  {
-    date: 'Jul',
-    hours: 2500,
-  },
-  {
-    date: 'Aug',
-    hours: 2100,
-  },
-]
 
 interface ParamTypes {
   userId: string
@@ -85,7 +55,7 @@ interface UserStats {
     pastWeek: TimeStats
     pastMonth: TimeStats
     allTime: TimeStats
-    average_per_day: number
+    averagePerDay: number
     currentStreak: number
     longestStreak: number
   }
@@ -260,8 +230,6 @@ function UserStats() {
   const fetchUserStats = async () => {
     const userstats = await axios.get(`/userstats/${userId}`)
 
-    // console.log(userstats)
-    // console.log(userstats.data)
     setRank(userstats.data.stats[timeInterval].rank)
     setStudyTime(userstats.data.stats[timeInterval].study_time)
 
@@ -295,6 +263,15 @@ function UserStats() {
     })
   }, [])
 
+  const ChartCard = ({ label, value }) => (
+    <Box className={classes.chartCard}>
+      <Typography variant="body1" gutterBottom={true}>
+        <Box fontWeight="fontWeightBold">{label}</Box>
+      </Typography>
+      <Typography variant="body1">{value}</Typography>
+    </Box>
+  )
+
   return (
     <Container maxWidth="lg" style={{ marginTop: '70px' }}>
       <Grid container spacing={3}>
@@ -303,39 +280,18 @@ function UserStats() {
             <Grid container>
               <Grid item xs={12}>
                 <Box display="flex">
-                  <Box className={classes.chartCard}>
-                    <Typography variant="body1" gutterBottom={true}>
-                      <Box fontWeight="fontWeightBold">Discord User Name</Box>
-                    </Typography>
-                    <Typography variant="body1">
-                      {userStats?.username}
-                    </Typography>
-                  </Box>
-
-                  <Box className={classes.chartCard}>
-                    <Typography variant="body1" gutterBottom={true}>
-                      <Box fontWeight="fontWeightBold">
-                        Leaderboard Placement
-                      </Box>
-                    </Typography>
-                    <Typography variant="body1">#{rank}</Typography>
-                  </Box>
-                  <Box className={classes.chartCard}>
-                    <Typography variant="body1" gutterBottom={true}>
-                      <Box fontWeight="fontWeightBold">Hours Studied</Box>
-                    </Typography>
-                    <Typography variant="body1">{studyTime}</Typography>
-                  </Box>
-                  <Box className={classes.chartCard}>
-                    <Typography variant="body1" gutterBottom={true}>
-                      <Box fontWeight="fontWeightBold">Average / day</Box>
-                    </Typography>
-                    <Typography variant="body1">
-                      {(studyTime / timeIntervalToDays[timeInterval]).toFixed(
-                        2
-                      )}
-                    </Typography>
-                  </Box>
+                  <ChartCard
+                    label="Discord User Name"
+                    value={userStats?.username}
+                  />
+                  <ChartCard label="Leaderboard Placement" value={`#${rank}`} />
+                  <ChartCard label="Hours Studied" value={studyTime} />
+                  <ChartCard
+                    label="Average / day"
+                    value={(
+                      studyTime / timeIntervalToDays[timeInterval]
+                    ).toFixed(2)}
+                  />
                 </Box>
                 <div style={{ height: '350px', paddingRight: '20px' }}>
                   {series && (
@@ -403,10 +359,32 @@ function UserStats() {
         <Grid item xs={4}>
           <div style={{ height: '500px' }}>
             {neighbors && (
-              <NeighborLeaderboard
-                leaderboardData={neighbors}
-                userId={userId}
-                height="500px"
+              <SimpleTable
+                columns={[
+                  { label: 'Rank', key: 'rank' },
+                  { label: 'Username', key: 'username' },
+                  {
+                    label: 'Study Time in Hours',
+                    key: 'study_time',
+                    numeric: true,
+                  },
+                ]}
+                data={neighbors}
+                height={500}
+                customRenders={(row, key) => {
+                  let res = row[key]
+                  if (key == 'username') {
+                    res =
+                      row[key].length < 18
+                        ? row[key]
+                        : row[key].substring(0, 18) + '...'
+                  }
+                  if (row['discord_user_id'] == userId) {
+                    res = <Box fontWeight={700}>{res}</Box>
+                  }
+                  return res
+                }}
+                viewLink={row => `/users/${row['discord_user_id']}`}
               />
             )}
           </div>
@@ -474,101 +452,51 @@ function UserStats() {
         <Grid item xs={4}>
           <div style={{ height: '213px' }}>
             {userStats && (
-              <PersonalStatsTable
-                leaderboardData={[
+              <SimpleTable
+                columns={[
+                  { label: 'Time Frame', key: 'timeFrame' },
+                  { label: 'Hours', key: 'study_time', numeric: true },
                   {
-                    time_frame: 'Past Day',
+                    label: 'Place',
+                    key: 'rank',
+                    numeric: true,
+                  },
+                ]}
+                data={[
+                  {
+                    timeFrame: 'Past Day',
                     ...userStats.stats['pastDay'],
                   },
                   {
-                    time_frame: 'Past Week',
+                    timeFrame: 'Past Week',
                     ...userStats.stats['pastWeek'],
                   },
 
                   {
-                    time_frame: 'Past Month',
+                    timeFrame: 'Past Month',
                     ...userStats.stats['pastMonth'],
                   },
 
                   {
-                    time_frame: 'All Time',
+                    timeFrame: 'All Time',
                     ...userStats.stats['allTime'],
                   },
                 ]}
-                height="213px"
+                customRenders={(row, key) => {
+                  let res = row[key]
+                  if (key == 'study_time') {
+                    res = `${res}h`
+                  }
+                  if (key == 'rank') {
+                    res = `#${res}`
+                  }
+                  return res
+                }}
+                height={213}
               />
             )}
           </div>
-          {/* <Paper className={classes.infoCard}>
-              {userStats && (
-              <div>
-              <Typography variant="h6" gutterBottom={true}>
-              <Box fontWeight="fontWeightBold">Study Time</Box>
-              </Typography>
-              <Typography variant="body1">
-              {
-              // @ts-ignore
-              `All time: ${userStats.stats.allTime.study_time} h`
-              }
-              </Typography>
-              <Typography variant="body1">
-              {
-              // @ts-ignore
-              `Monthly: ${userStats.stats.pastMonth.study_time} h`
-              }
-              </Typography>
-              <Typography variant="body1">
-              {
-              // @ts-ignore
-              `Past 7d: ${userStats.stats.pastWeek.study_time} h`
-              }
-              </Typography>
-              <Typography variant="body1">
-              {
-              // @ts-ignore
-              `Past 24h: ${userStats.stats.pastDay.study_time} h`
-              }
-              </Typography>
-              </div>
-              )}
-              </Paper> */}
         </Grid>
-        {/* <Grid item xs={4}>
-            <Paper className={classes.infoCard}>
-            {userStats && (
-            <div>
-            <Typography variant="h6" gutterBottom={true}>
-            <Box fontWeight="fontWeightBold">Leaderboard Placement</Box>
-            </Typography>
-
-            <Typography variant="body1">
-            {
-            // @ts-ignore
-            `All time: #${userStats.stats.allTime.rank}`
-            }
-            </Typography>
-            <Typography variant="body1">
-            {
-            // @ts-ignore
-            `Monthly: #${userStats.stats.pastMonth.rank}`
-            }
-            </Typography>
-            <Typography variant="body1">
-            {
-            // @ts-ignore
-            `Past 7d: #${userStats.stats.pastWeek.rank}`
-            }
-            </Typography>
-            <Typography variant="body1">
-            {
-            // @ts-ignore
-            `Past 24h: #${userStats.stats.pastDay.rank}`
-            }
-            </Typography>
-            </div>
-            )}
-            </Paper>
-            </Grid> */}
       </Grid>
     </Container>
   )

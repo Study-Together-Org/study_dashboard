@@ -10,6 +10,7 @@ import SearchIcon from '@material-ui/icons/Search'
 import IconButton from '@material-ui/core/IconButton'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import UserTable from './UserTable'
+import SimpleTable from '../../components/SimpleTable'
 
 interface User {
   username: string
@@ -18,35 +19,21 @@ interface User {
 
 const UserSearch = () => {
   const history = useHistory()
-  const [open, setOpen] = useState(false)
+  // options stores the results of the user search query
   const [options, setOptions] = useState([])
 
+  // value is the string currently in the search bar
   const [value, setValue] = useState()
 
-  const [loading, setLoading] = useState(open && options.length === 0)
+  // loading indicates whether we are waiting for a response from the user search query
+  const [loading, setLoading] = useState(false)
 
-  /* useEffect(() => {
-
-   *   const delayDebounceFn = setTimeout(async () => {
-   *     const response = await fetch(`/users?match=${inputValue}`)
-   *     const users = await response.json()
-   *     setOptions(users)
-   *     setLoading(false)
-   *   }, 1000)
-
-   *   return () => clearTimeout(delayDebounceFn)
-   * }, [inputValue])
-   */
-  // React.useEffect(() => {
-  //   if (!open) {
-  //     setOptions([]);
-  //   }
-  // }, [open]);
-
+  // for handling changes to the controlled textinput component
   const handleChange = event => {
     setValue(event.target.value)
   }
 
+  // for dispatching a user search query
   const handleSearch = () => {
     setLoading(true)
     axios
@@ -61,6 +48,7 @@ const UserSearch = () => {
       })
   }
 
+  // triggers the user search query when pressing enter on the textfield
   const keyPress = e => {
     if (e.keyCode == 13) {
       handleSearch()
@@ -69,6 +57,7 @@ const UserSearch = () => {
 
   return (
     <Container maxWidth="xs" style={{ marginTop: '150px' }}>
+      {/* The search box text field */}
       <TextField
         id="outlined-basic"
         label="Search for a user..."
@@ -88,57 +77,18 @@ const UserSearch = () => {
           ),
         }}
       />
-      <UserTable leaderboardData={options} height={500} />
+      {/* The user table for displaying the results */}
+      <SimpleTable
+        columns={[
+          { label: 'Username', key: 'username' },
+          { label: 'Tag', key: 'tag' },
+        ]}
+        data={options}
+        height={490}
+        viewLink={row => `/users/${row['discord_user_id']}`}
+      />
     </Container>
   )
-  /* return (
-   *   <Autocomplete
-   *     id="asynchronous-demo"
-   *     value={value}
-   *     onChange={(event, newValue: User | null) => {
-   *       if (newValue) {
-   *         history.push(`users/${newValue.user_id}`)
-   *         setValue(newValue)
-   *       }
-   *     }}
-   *     inputValue={inputValue}
-   *     onInputChange={(event, newInputValue) => {
-   *       setInputValue(newInputValue)
-   *     }}
-   *     style={{ width: 300 }}
-   *     open={open}
-   *     onOpen={() => {
-   *       setOpen(true)
-   *     }}
-   *     onClose={() => {
-   *       setOpen(false)
-   *     }}
-   *     getOptionSelected={(option: User, nvalue: User) =>
-   *       option.user_id === nvalue.user_id
-   *     }
-   *     getOptionLabel={(option: User) => option.username}
-   *     options={options}
-   *     loading={loading}
-   *     renderInput={params => (
-   *       <TextField
-   *         {...params}
-   *         label="Username"
-   *         variant="outlined"
-   *         InputProps={{
-   *           ...params.InputProps,
-   *           endAdornment: (
-   *             <>
-   *               {loading ? (
-   *                 <CircularProgress color="inherit" size={20} />
-   *               ) : null}
-   *               {params.InputProps.endAdornment}
-   *             </>
-   *           ),
-   *         }}
-   *       />
-   *     )}
-   *   />
-   * ) */
 }
 
 export default UserSearch
