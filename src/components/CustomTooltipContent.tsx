@@ -3,7 +3,6 @@ import React from 'react'
 // @ts-ignore
 const CustomTooltipContent = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
-    console.log(payload)
     return (
       <div
         className="recharts-default-tooltip"

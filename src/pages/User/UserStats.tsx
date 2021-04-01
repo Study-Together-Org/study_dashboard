@@ -4,14 +4,9 @@ import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
-import NeighborLeaderboard from './NeighborLeaderboard'
-import PersonalStatsTable from './PersonalStatsTable'
 import { makeStyles } from '@material-ui/core/styles'
 import { useParams } from 'react-router-dom'
 import SimpleTable from '../../components/SimpleTable'
@@ -73,94 +68,11 @@ interface UserStats {
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-const timestamp = new Date('May 23 2017').getTime()
-const ONE_DAY = 86400000
-
-/* const DATA : any[] = [
- *   { x0: ONE_DAY * 2, x: ONE_DAY * 3, y: 1 },
- *   { x0: ONE_DAY * 7, x: ONE_DAY * 8, y: 1 },
- *   { x0: ONE_DAY * 8, x: ONE_DAY * 9, y: 1 },
- *   { x0: ONE_DAY * 9, x: ONE_DAY * 10, y: 2 },
- *   { x0: ONE_DAY * 10, x: ONE_DAY * 11, y: 2.2 },
- *   { x0: ONE_DAY * 19, x: ONE_DAY * 20, y: 1 },
- *   { x0: ONE_DAY * 20, x: ONE_DAY * 21, y: 2.5 },
- *   { x0: ONE_DAY * 21, x: ONE_DAY * 24, y: 1 }
- * ].map(el => ({ x0: el.x0 + timestamp, x: el.x + timestamp, y: el.y }));
- *  */
-
-function sma(arr: any[], range: number, format: any) {
-  if (!Array.isArray(arr)) {
-    throw TypeError('expected first argument to be an array')
-  }
-
-  const fn: any = typeof format === 'function' ? format : toFixed
-  const num = range || arr.length
-  const res: any[] = []
-  const len = arr.length + 1
-  let idx = num - 1
-  while ((idx += 1) < len) {
-    res.push(fn(avg(arr, idx, num)))
-  }
-  return res
-}
-
-/**
- * Create an average for the specified range.
- *
- * ```js
- * console.log(avg([1, 2, 3, 4, 5, 6, 7, 8, 9], 5, 4));
- * //=> 3.5
- * ```
- * @param  {Array} `arr` Array to pull the range from.
- * @param  {Number} `idx` Index of element being calculated
- * @param  {Number} `range` Size of range to calculate.
- * @return {Number} Average of range.
- */
-
-function avg(arr: any[], idx: number, range: number) {
-  return sum(arr.slice(idx - range, idx)) / range
-}
-
 /**
  * Calculate the sum of an array.
  * @param  {Array} `arr` Array
  * @return {Number} Sum
  */
-
-function sum(arr: any[]) {
-  let len = arr.length
-  let num = 0
-  while (len) {
-    len -= 1
-    num += Number(arr[len])
-  }
-  return num
-}
-
-/**
- * Default format method.
- * @param  {Number} `n` Number to format.
- * @return {String} Formatted number.
- */
-
-function toFixed(n: any) {
-  return n.toFixed(2)
-}
-
-const hourdata = [1, 1, 1, 2, 2.2, 1, 2.5]
-
-const DATA: any[] = hourdata.map((el, index) => ({
-  x0: index * ONE_DAY + timestamp,
-  x: (index + 1) * ONE_DAY + timestamp,
-  y: el,
-}))
-
-const MovingAverageData: any[] = sma(DATA, 3, undefined)
-
-const formattedMovingData: any[] = MovingAverageData.map((el, index) => ({
-  x: (index + 3) * ONE_DAY + timestamp,
-  y: el,
-}))
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -204,17 +116,20 @@ const timeIntervalToDays = {
 }
 
 function UserStats() {
-  const history = useHistory()
+  // userId being viewed
   const { userId } = useParams<ParamTypes>()
   const classes = useStyles()
 
+  // the timeseries study data
   const [series, setSeries] = useState()
+  // the neighbor leaderboard data
   const [neighbors, setNeighbors] = useState()
+  // the users statistics ddata
   const [userStats, setUserStats] = useState<UserStats>()
+  // the current time interval of focus
   const [timeInterval, setTimeInterval] = useState('pastMonth')
-  const [studyTime, setStudyTime] = useState(0)
-  const [rank, setRank] = useState(0)
 
+  // get timeseries and neighbor leaderboard data
   const fetchTimeSeries = async () => {
     const timeseries = await axios.get(`/usertimeseries/${userId}`, {
       params: {
@@ -224,30 +139,23 @@ function UserStats() {
 
     setSeries(timeseries.data.timeseries)
     setNeighbors(timeseries.data.neighbors)
-    console.log(timeseries.data.neighbors)
   }
 
+  // get a users stats
   const fetchUserStats = async () => {
     const userstats = await axios.get(`/userstats/${userId}`)
-
-    setRank(userstats.data.stats[timeInterval].rank)
-    setStudyTime(userstats.data.stats[timeInterval].study_time)
 
     setUserStats(userstats.data)
   }
 
+  // refetch time series whenever the time interval changes
   useEffect(() => {
     fetchTimeSeries().catch(e => {
       console.log(`error in timeseries call: ${e.message}`)
     })
-
-    if (userStats) {
-      console.log(timeInterval)
-      setRank(userStats.stats[timeInterval].rank)
-      setStudyTime(userStats.stats[timeInterval].study_time)
-    }
   }, [timeInterval])
 
+  // refetch time series and user stats whenever the userId changes
   useEffect(() => {
     fetchTimeSeries().catch(e => {
       console.log(`error in timeseries call: ${e.message}`)
@@ -256,12 +164,6 @@ function UserStats() {
       console.log(`error in userstats call: ${e.message}`)
     })
   }, [userId])
-
-  useEffect(() => {
-    fetchUserStats().catch(e => {
-      console.log(`error in userstats call: ${e.message}`)
-    })
-  }, [])
 
   const ChartCard = ({ label, value }) => (
     <Box className={classes.chartCard}>
@@ -282,15 +184,29 @@ function UserStats() {
                 <Box display="flex">
                   <ChartCard
                     label="Discord User Name"
-                    value={userStats?.username}
+                    value={userStats && userStats?.username}
                   />
-                  <ChartCard label="Leaderboard Placement" value={`#${rank}`} />
-                  <ChartCard label="Hours Studied" value={studyTime} />
+                  <ChartCard
+                    label="Leaderboard Placement"
+                    value={
+                      userStats && `#${userStats.stats[timeInterval].rank}`
+                    }
+                  />
+                  <ChartCard
+                    label="Hours Studied"
+                    value={
+                      userStats && userStats.stats[timeInterval].study_time
+                    }
+                  />
                   <ChartCard
                     label="Average / day"
-                    value={(
-                      studyTime / timeIntervalToDays[timeInterval]
-                    ).toFixed(2)}
+                    value={
+                      userStats &&
+                      (
+                        userStats.stats[timeInterval].study_time /
+                        timeIntervalToDays[timeInterval]
+                      ).toFixed(2)
+                    }
                   />
                 </Box>
                 <div style={{ height: '350px', paddingRight: '20px' }}>
@@ -439,11 +355,6 @@ function UserStats() {
                     `Longest Study Streak: ${userStats.stats.longestStreak}`
                   }
                 </Typography>
-
-                {/* <Typography variant="body1">{
-                    // @ts-ignore
-                    `Role rank: ${userStats.roleInfo.time_to_next_role}h`
-                    }</Typography> */}
               </div>
             )}
           </Paper>

@@ -1,8 +1,6 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-import UserInsights from './UserInsights'
 import UserStats from './UserStats'
-import UserTodos from './UserTodos'
 import UserSearch from './UserSearch'
 
 function UserPage() {

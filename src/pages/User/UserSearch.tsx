@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import Container from '@material-ui/core/Container'
 import { useHistory } from 'react-router'
-import fetch from 'cross-fetch'
 import axios from 'axios'
 import TextField from '@material-ui/core/TextField'
-import Autocomplete from '@material-ui/lab/Autocomplete'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import SearchIcon from '@material-ui/icons/Search'
 import IconButton from '@material-ui/core/IconButton'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import UserTable from './UserTable'
 import SimpleTable from '../../components/SimpleTable'
 
 interface User {
