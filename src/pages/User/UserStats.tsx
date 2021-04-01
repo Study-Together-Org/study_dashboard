@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useHistory } from 'react-router'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
@@ -128,6 +128,9 @@ function UserStats() {
   const [userStats, setUserStats] = useState<UserStats>()
   // the current time interval of focus
   const [timeInterval, setTimeInterval] = useState('pastMonth')
+  // userId ref for tracking when userId changes in useEffect
+  // with multiple dependencies
+  const userIdRef = useRef(null)
 
   // get timeseries and neighbor leaderboard data
   const fetchTimeSeries = async () => {
@@ -136,7 +139,6 @@ function UserStats() {
         time_interval: timeInterval,
       },
     })
-
     setSeries(timeseries.data.timeseries)
     setNeighbors(timeseries.data.neighbors)
   }
@@ -144,26 +146,23 @@ function UserStats() {
   // get a users stats
   const fetchUserStats = async () => {
     const userstats = await axios.get(`/userstats/${userId}`)
-
     setUserStats(userstats.data)
   }
 
-  // refetch time series whenever the time interval changes
+  // refetch whenever the userId or time interval changes
   useEffect(() => {
+    // always refetch time series data
     fetchTimeSeries().catch(e => {
       console.log(`error in timeseries call: ${e.message}`)
     })
-  }, [timeInterval])
-
-  // refetch time series and user stats whenever the userId changes
-  useEffect(() => {
-    fetchTimeSeries().catch(e => {
-      console.log(`error in timeseries call: ${e.message}`)
-    })
-    fetchUserStats().catch(e => {
-      console.log(`error in userstats call: ${e.message}`)
-    })
-  }, [userId])
+    // only refetch user stats data if userId changed
+    if (userIdRef.current != userId) {
+      fetchUserStats().catch(e => {
+        console.log(`error in userstats call: ${e.message}`)
+      })
+      userIdRef.current = userId
+    }
+  }, [userId, timeInterval])
 
   const ChartCard = ({ label, value }) => (
     <Box className={classes.chartCard}>
