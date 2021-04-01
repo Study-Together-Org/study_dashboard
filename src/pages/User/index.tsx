@@ -14,8 +14,6 @@ function UserPage() {
         path={['/users/:userId', '/users/:userId/stats']}
         component={UserStats}
       />
-      {/* <Route exact path="/users/:userId/insights" component={UserInsights} />
-          <Route exact path="/users/:userId/todos" component={UserTodos} /> */}
     </Switch>
   )
 }
