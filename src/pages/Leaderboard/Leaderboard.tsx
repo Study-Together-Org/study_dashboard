@@ -15,7 +15,7 @@ import Paper from '@material-ui/core/Paper'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
-import axios from 'axios'
+import { api as axios } from '../../services'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 const headCells = [
@@ -287,10 +287,12 @@ const Leaderboard = () => {
             <EnhancedTableHead />
             {loading ? (
               <div style={{ height: '530px' }}></div>
+            ) : error || !leaderboardData?.leaderboard ? (
+              <p>Error</p>
             ) : (
               <TableBody>
-                {leaderboardData.leaderboard
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                {leaderboardData?.leaderboard
+                  ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
                     const labelId = `enhanced-table-checkbox-${index}`
 

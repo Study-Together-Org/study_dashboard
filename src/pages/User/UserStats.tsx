@@ -23,7 +23,7 @@ import {
   LabelList,
   ResponsiveContainer,
 } from 'recharts'
-import axios from 'axios'
+import { api as axios } from '../../services'
 
 import CustomTooltipContent from '../../components/CustomTooltipContent'
 

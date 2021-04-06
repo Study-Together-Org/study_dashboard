@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Container from '@material-ui/core/Container'
 import { useHistory } from 'react-router'
-import axios from 'axios'
+import { api as axios } from '../../services'
 import TextField from '@material-ui/core/TextField'
 import SearchIcon from '@material-ui/icons/Search'
 import IconButton from '@material-ui/core/IconButton'
