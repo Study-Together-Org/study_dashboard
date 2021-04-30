@@ -315,6 +315,9 @@ function UserStats() {
                         ? row[key]
                         : row[key].substring(0, 18) + '...'
                   }
+                  if (key == 'study_time') {
+                    res = res.toFixed(1)
+                  }
                   if (row['discord_user_id'] == userId) {
                     res = <span style={{ fontWeight: 700 }}>{res}</span>
                   }
@@ -419,7 +422,7 @@ function UserStats() {
                 customRenders={(row, key) => {
                   let res = row[key]
                   if (key == 'study_time') {
-                    res = `${res}h`
+                    res = `${res.toFixed(1)}h`
                   }
                   if (key == 'rank') {
                     res = `#${res}`
