@@ -261,10 +261,10 @@ function UserStats() {
                       setTimeInterval(e.target.value)
                     }}
                   >
-                    <MenuItem value="pastDay">Past Day</MenuItem>
+                    {/* <MenuItem value="pastDay">Past Day</MenuItem> */}
                     <MenuItem value="pastWeek">Past Week</MenuItem>
                     <MenuItem value="pastMonth">Past Month</MenuItem>
-                    <MenuItem value="allTime">All Time</MenuItem>
+                    {/* <MenuItem value="allTime">All Time</MenuItem> */}
                   </Select>
                 </Box>
               </Grid>
