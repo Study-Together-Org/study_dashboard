@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import UserPage from './pages/User'
-import Landing from './pages/Landing'
+// import Landing from './pages/Landing'
 import Leaderboard from './pages/Leaderboard'
 import Box from '@material-ui/core/Box'
 
@@ -47,7 +47,9 @@ function App() {
           <div className={classes.title}>
             <Button component={Link} to="/" className={classes.navButton}>
               <Typography variant="h6" className={classes.title}>
-                <Box fontWeight="fontWeightBold">Study Together</Box>
+                <Box fontWeight="fontWeightBold">
+                  Study Together Dashboard (Beta)
+                </Box>
               </Typography>
             </Button>
           </div>
@@ -58,24 +60,24 @@ function App() {
           {/* <Link component="button" href="/leaderboard" onClick={preventDefault}>Leaderboard</Link>
               <Link component="button" href="/users" onClick={preventDefault}>Users</Link>
               <Link component="button" href="/rules" onClick={preventDefault}>Rules</Link> */}
-          <Button
+          {/* <Button
             component={Link}
             to="/leaderboard"
             className={classes.navButton}
           >
             <Box fontWeight={600}>Leaderboard</Box>
-          </Button>
+          </Button> */}
           <Button component={Link} to="/users" className={classes.navButton}>
-            <Box fontWeight={600}>User Stats</Box>
+            <Box fontWeight={600}>User Search</Box>
           </Button>
-          <Button component={Link} to="/rules" className={classes.navButton}>
+          {/* <Button component={Link} to="/rules" className={classes.navButton}>
             <Box fontWeight={600}>Rules</Box>
-          </Button>
+          </Button> */}
         </Toolbar>
       </AppBar>
 
       <Switch>
-        <Route exact path="/" component={Landing} />
+        <Route exact path="/" component={Leaderboard} />
         <Route path="/users" component={UserPage} />
         <Route path="/leaderboard" component={Leaderboard} />
       </Switch>
