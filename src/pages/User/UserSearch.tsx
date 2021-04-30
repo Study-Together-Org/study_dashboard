@@ -19,7 +19,7 @@ const UserSearch = () => {
   const [options, setOptions] = useState([])
 
   // value is the string currently in the search bar
-  const [value, setValue] = useState()
+  const [value, setValue] = useState('')
 
   // loading indicates whether we are waiting for a response from the user search query
   const [loading, setLoading] = useState(false)

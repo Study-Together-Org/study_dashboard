@@ -132,6 +132,9 @@ function UserStats() {
   // with multiple dependencies
   const userIdRef = useRef(null)
 
+  // error
+  const [error, setError] = useState(false)
+
   // get timeseries and neighbor leaderboard data
   const fetchTimeSeries = async () => {
     const timeseries = await axios.get(`/usertimeseries/${userId}`, {
@@ -146,6 +149,7 @@ function UserStats() {
   // get a users stats
   const fetchUserStats = async () => {
     const userstats = await axios.get(`/userstats/${userId}`)
+    console.log(userstats)
     setUserStats(userstats.data)
   }
 
@@ -153,12 +157,14 @@ function UserStats() {
   useEffect(() => {
     // always refetch time series data
     fetchTimeSeries().catch(e => {
-      console.log(`error in timeseries call: ${e.message}`)
+      console.log(`Error in timeseries call: ${e.message}`)
+      setError(true)
     })
     // only refetch user stats data if userId changed
     if (userIdRef.current != userId) {
       fetchUserStats().catch(e => {
-        console.log(`error in userstats call: ${e.message}`)
+        console.log(`Error in userstats call: ${e.message}`)
+        setError(true)
       })
       userIdRef.current = userId
     }
@@ -167,11 +173,26 @@ function UserStats() {
   const ChartCard = ({ label, value }) => (
     <Box className={classes.chartCard}>
       <Typography variant="body1" gutterBottom={true}>
-        <Box fontWeight="fontWeightBold">{label}</Box>
+        <span style={{ fontWeight: 700 }}>{label}</span>
       </Typography>
       <Typography variant="body1">{value}</Typography>
     </Box>
   )
+
+  if (error)
+    return (
+      <Container maxWidth="lg" style={{ marginTop: '200px' }}>
+        <div style={{ width: '60%' }}>
+          <Typography variant="h1" style={{ fontSize: '140px' }}>
+            Could not find user.
+          </Typography>
+          <Typography variant="h4" style={{ marginTop: '100px' }}>
+            If you think this is an error, please contact the study together
+            support team.
+          </Typography>
+        </div>
+      </Container>
+    )
 
   return (
     <Container maxWidth="lg" style={{ marginTop: '70px' }}>
@@ -295,7 +316,7 @@ function UserStats() {
                         : row[key].substring(0, 18) + '...'
                   }
                   if (row['discord_user_id'] == userId) {
-                    res = <Box fontWeight={700}>{res}</Box>
+                    res = <span style={{ fontWeight: 700 }}>{res}</span>
                   }
                   return res
                 }}
@@ -310,7 +331,7 @@ function UserStats() {
             {userStats && (
               <div>
                 <Typography variant="h6" gutterBottom={true}>
-                  <Box fontWeight="fontWeightBold">Study Role</Box>
+                  <span style={{ fontWeight: 700 }}>Study Role</span>
                 </Typography>
                 <Typography variant="body1">
                   Current study role:

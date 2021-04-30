@@ -68,7 +68,7 @@ function EnhancedTableHead(props) {
       <TableRow style={{ height: '50px' }}>
         {props.columns.map(column => (
           <TableCell
-            key={column.id}
+            key={column.label}
             align={column.numeric ? 'right' : 'left'}
             padding={column.disablePadding ? 'none' : 'default'}
           >
@@ -125,8 +125,9 @@ const SimpleTable = (props: IDataTableProps) => {
                       cursor: props.viewLink ? 'pointer' : 'default',
                     }}
                   >
-                    {props.columns.map(column => (
+                    {props.columns.map((column, index) => (
                       <TableCell
+                        key={index}
                         align={column.numeric ? 'right' : 'left'}
                         padding={column.disablePadding ? 'none' : 'default'}
                         style={{
