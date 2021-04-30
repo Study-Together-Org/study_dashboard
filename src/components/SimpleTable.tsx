@@ -83,7 +83,6 @@ function EnhancedTableHead(props) {
 const useStyles = makeStyles(theme => ({
   paper: {
     width: '100%',
-    marginBottom: theme.spacing(2),
   },
   table: {},
 }))
@@ -99,7 +98,7 @@ const SimpleTable = (props: IDataTableProps) => {
 
   return (
     <Paper className={classes.paper}>
-      <TableContainer style={{ height: props.height }}>
+      <TableContainer style={{ height: props.height, overflow: 'hidden' }}>
         <Table
           className={classes.table}
           aria-labelledby="tableTitle"

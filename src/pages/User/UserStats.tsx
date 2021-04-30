@@ -279,7 +279,7 @@ function UserStats() {
                   { label: 'Rank', key: 'rank' },
                   { label: 'Username', key: 'username' },
                   {
-                    label: 'Study Time in Hours',
+                    label: 'Study Time (h)',
                     key: 'study_time',
                     numeric: true,
                   },
