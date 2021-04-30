@@ -9,13 +9,13 @@ const options = {
   target: 'http://95.179.130.39:5000', // target host
   changeOrigin: true, // needed for virtual hosted sites
   pathRewrite: {
-    '^/api/': '/', // remove base path
+    '^/api': '/', // remove base path
   },
 }
 
 // create the proxy (without context)
 const exampleProxy = createProxyMiddleware(options)
-app.use('/api', exampleProxy)
+app.use('/api/', exampleProxy)
 
 // app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, '..', 'build')))
