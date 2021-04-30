@@ -73,6 +73,13 @@ function App() {
           {/* <Button component={Link} to="/rules" className={classes.navButton}>
             <Box fontWeight={600}>Rules</Box>
           </Button> */}
+          <Button
+            target="_blank"
+            href="https://forms.gle/6AKTsMDz2DmJVAvy5"
+            className={classes.navButton}
+          >
+            <Box fontWeight={600}>Feedback Form</Box>
+          </Button>
         </Toolbar>
       </AppBar>
 
