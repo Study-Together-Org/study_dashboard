@@ -11,6 +11,7 @@ import UserPage from './pages/User'
 // import Landing from './pages/Landing'
 import Leaderboard from './pages/Leaderboard'
 import Box from '@material-ui/core/Box'
+import VerticalNav from 'components/VerticalNav'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,11 +40,11 @@ function App() {
 
   return (
     <div className="{classes.root}">
-      <AppBar position="static">
+      {/* <AppBar position="static">
         <Toolbar>
-          {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
               <MenuIcon />
-              </IconButton> */}
+              </IconButton>
           <div className={classes.title}>
             <Button component={Link} to="/" className={classes.navButton}>
               <Typography variant="h6" className={classes.title}>
@@ -54,25 +55,25 @@ function App() {
             </Button>
           </div>
 
-          {/* <Typography>Leaderboard</Typography>
+          <Typography>Leaderboard</Typography>
               <Typography>Leaderboard</Typography>
-              <Typography>Leaderboard</Typography> */}
-          {/* <Link component="button" href="/leaderboard" onClick={preventDefault}>Leaderboard</Link>
+              <Typography>Leaderboard</Typography>
+          <Link component="button" href="/leaderboard" onClick={preventDefault}>Leaderboard</Link>
               <Link component="button" href="/users" onClick={preventDefault}>Users</Link>
-              <Link component="button" href="/rules" onClick={preventDefault}>Rules</Link> */}
-          {/* <Button
+              <Link component="button" href="/rules" onClick={preventDefault}>Rules</Link>
+          <Button
             component={Link}
             to="/leaderboard"
             className={classes.navButton}
           >
             <Box fontWeight={600}>Leaderboard</Box>
-          </Button> */}
+          </Button>
           <Button component={Link} to="/users" className={classes.navButton}>
             <Box fontWeight={600}>User Search</Box>
           </Button>
-          {/* <Button component={Link} to="/rules" className={classes.navButton}>
+          <Button component={Link} to="/rules" className={classes.navButton}>
             <Box fontWeight={600}>Rules</Box>
-          </Button> */}
+          </Button>
           <Button
             target="_blank"
             href="https://forms.gle/6AKTsMDz2DmJVAvy5"
@@ -81,13 +82,14 @@ function App() {
             <Box fontWeight={600}>Feedback Form</Box>
           </Button>
         </Toolbar>
-      </AppBar>
-
-      <Switch>
-        <Route exact path="/" component={Leaderboard} />
-        <Route path="/users" component={UserPage} />
-        <Route path="/leaderboard" component={Leaderboard} />
-      </Switch>
+      </AppBar> */}
+      <VerticalNav>
+        <Switch>
+          <Route exact path="/" component={Leaderboard} />
+          <Route path="/users" component={UserPage} />
+          <Route path="/leaderboard" component={Leaderboard} />
+        </Switch>
+      </VerticalNav>
     </div>
   )
 }
