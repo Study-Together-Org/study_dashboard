@@ -60,6 +60,11 @@ interface IDataTableProps {
    * The height for the table container
    */
   height: number
+
+  /**
+   * The expected number of rows, for choosing row height
+   */
+  rowHeight?: number
 }
 
 function EnhancedTableHead(props) {
@@ -121,7 +126,9 @@ const SimpleTable = (props: IDataTableProps) => {
                       props.viewLink && history.push(props.viewLink(row))
                     }}
                     style={{
-                      height: (props.height - 50) / props.data.length,
+                      height:
+                        props.rowHeight ||
+                        (props.height - 50) / props.data.length,
                       cursor: props.viewLink ? 'pointer' : 'default',
                     }}
                   >
@@ -130,10 +137,10 @@ const SimpleTable = (props: IDataTableProps) => {
                         key={index}
                         align={column.numeric ? 'right' : 'left'}
                         padding={column.disablePadding ? 'none' : 'default'}
-                        style={{
-                          border:
-                            index == props.data.length - 1 ? 'none' : 'default',
-                        }}
+                        // style={{
+                        //   border:
+                        //     index == props.data.length - 1 ? 'none' : 'default',
+                        // }}
                       >
                         {props.customRenders
                           ? props.customRenders(row, column.key)

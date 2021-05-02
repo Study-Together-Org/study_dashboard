@@ -81,6 +81,7 @@ const UserSearch = () => {
         ]}
         data={options}
         height={490}
+        rowHeight={490 / 10}
         viewLink={row => `/users/${row['discord_user_id']}`}
       />
     </Container>
