@@ -5,11 +5,11 @@ import Leaderboard from './Leaderboard'
 
 function UserPage() {
   return (
-    <Container maxWidth="md">
-      <Box my={15}>
-        <Leaderboard />
-      </Box>
-    </Container>
+    // <Container maxWidth="md">
+    //   <Box my={15}>
+    <Leaderboard />
+    // </Box>
+    // </Container>
   )
 }
 

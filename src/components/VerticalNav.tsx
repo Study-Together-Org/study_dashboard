@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
 import { useLocation, Link } from 'react-router-dom'
 import Box from '@material-ui/core/Box'
@@ -60,22 +61,22 @@ export default function ClippedDrawer({ children }) {
   const location = useLocation()
 
   const generalNav: [string, string, any][] = [
-    ['Leaderboard', '/leaderboard/', <TableChartIcon />],
-    ['Your Study Stats', '/userstats/', <EqualizerIcon />],
-    ['User Search', '/users/', <SearchIcon />],
+    ['Leaderboard', '/leaderboard', <TableChartIcon />],
+    ['Your Study Stats', '/userstats', <EqualizerIcon />],
+    ['User Search', '/users', <SearchIcon />],
   ]
 
   const appNav: [string, string, any][] = [
-    ['Todo (Coming Soon)', '/todoApp/', <ListAltIcon />],
+    ['Todo (Coming Soon)', '/todoApp', <ListAltIcon />],
   ]
 
   const settingsNav: [string, string, any][] = [
-    ['Profile', '/profile/', <PersonIcon />],
+    ['Profile (Coming Soon)', '/profile', <PersonIcon />],
   ]
 
   const infoNav: [string, string, any][] = [
-    ['FAQ', '/faq/', <LiveHelpIcon />],
-    ['Feedback Form', '/feedback/', <FeedbackIcon />],
+    ['FAQ', '/faq', <LiveHelpIcon />],
+    ['Feedback Form', 'https://forms.gle/6AKTsMDz2DmJVAvy5', <FeedbackIcon />],
   ]
 
   const navSections: [string, [string, string, any][]][] = [
@@ -123,27 +124,52 @@ export default function ClippedDrawer({ children }) {
                 <Box fontWeight="fontWeightBold">{sectionName}</Box>
               </Typography>
               <List>
-                {section.map(([name, route, e], index) => (
-                  <ListItem
-                    button
-                    component={Link}
-                    to={route}
-                    key={name}
-                    style={{
-                      color: location.pathname == route && '#3F51B5',
-                    }}
-                  >
-                    <ListItemIcon
+                {section.map(([name, route, e], index) =>
+                  route.substring(0, 5) == 'https' ? (
+                    <ListItem
+                      button
+                      component={Link}
+                      to={{
+                        pathname: route,
+                      }}
+                      target="_blank"
+                      key={name}
+                    >
+                      <ListItemIcon
+                        style={{
+                          justifyContent: 'center',
+                        }}
+                      >
+                        {e}
+                      </ListItemIcon>
+                      <ListItemText primary={name} />
+                    </ListItem>
+                  ) : (
+                    <ListItem
+                      button
+                      component={Link}
+                      to={route}
+                      key={name}
                       style={{
-                        justifyContent: 'center',
-                        color: location.pathname == route && '#3F51B5',
+                        color:
+                          location.pathname.split('/')[1] ==
+                            route.split('/')[1] && '#3F51B5',
                       }}
                     >
-                      {e}
-                    </ListItemIcon>
-                    <ListItemText primary={name} />
-                  </ListItem>
-                ))}
+                      <ListItemIcon
+                        style={{
+                          justifyContent: 'center',
+                          color:
+                            location.pathname.split('/')[1] ==
+                              route.split('/')[1] && '#3F51B5',
+                        }}
+                      >
+                        {e}
+                      </ListItemIcon>
+                      <ListItemText primary={name} />
+                    </ListItem>
+                  )
+                )}
               </List>
             </>
           ))}
@@ -151,7 +177,7 @@ export default function ClippedDrawer({ children }) {
       </Drawer>
       <main className={classes.content}>
         <Toolbar />
-        {children}
+        <Box margin="50px 0 0 0 ">{children}</Box>
         {/* <Typography paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus

@@ -195,247 +195,241 @@ function UserStats() {
     )
 
   return (
-    <Container maxWidth="lg" style={{ marginTop: '70px' }}>
-      <Grid container spacing={3}>
-        <Grid item xs={8}>
-          <Paper style={{ height: '500px' }}>
-            <Grid container>
-              <Grid item xs={12}>
-                <Box display="flex">
-                  <ChartCard
-                    label="Discord User Name"
-                    value={userStats && userStats?.username}
-                  />
-                  <ChartCard
-                    label="Leaderboard Placement"
-                    value={
-                      userStats && `#${userStats.stats[timeInterval].rank}`
-                    }
-                  />
-                  <ChartCard
-                    label="Hours Studied"
-                    value={
-                      userStats && userStats.stats[timeInterval].study_time
-                    }
-                  />
-                  <ChartCard
-                    label="Average / day"
-                    value={
-                      userStats &&
-                      (
-                        userStats.stats[timeInterval].study_time /
-                        timeIntervalToDays[timeInterval]
-                      ).toFixed(2)
-                    }
-                  />
-                </Box>
-                <div style={{ height: '350px', paddingRight: '20px' }}>
-                  {series && (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={series}>
-                        <CartesianGrid
-                          stroke="#eee"
-                          strokeDasharray="5 3"
-                          vertical={false}
-                        />
-                        <XAxis dataKey="date" />
-                        <YAxis yAxisId="left" orientation="left" />
-                        <Tooltip
-                          content={
-                            // @ts-ignore
-                            <CustomTooltipContent />
-                          }
-                          cursor={{ fill: '#E0E0E0' }}
-                        />
-                        <Bar
-                          yAxisId="left"
-                          dataKey="study_time"
-                          fill="#8a85ff"
-                          radius={7}
-                          barSize={10}
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  )}
-                </div>
-              </Grid>
-              <Grid item xs={12}>
-                <Divider className={classes.divider} />
-              </Grid>
-              <Grid item xs={12}>
-                <Box
-                  display="flex"
-                  align-items="center"
-                  marginTop="6px"
-                  marginLeft="20px"
-                >
-                  <Select
-                    style={{ height: '35px' }}
-                    value={timeInterval}
-                    className={classes.select}
-                    inputProps={{
-                      classes: {
-                        icon: classes.icon,
-                      },
-                    }}
-                    onChange={(e: any) => {
-                      setTimeInterval(e.target.value)
-                    }}
-                  >
-                    {/* <MenuItem value="pastDay">Past Day</MenuItem> */}
-                    <MenuItem value="pastWeek">Past Week</MenuItem>
-                    <MenuItem value="pastMonth">Past Month</MenuItem>
-                    {/* <MenuItem value="allTime">All Time</MenuItem> */}
-                  </Select>
-                </Box>
-              </Grid>
-            </Grid>
-          </Paper>
-        </Grid>
-        <Grid item xs={4}>
-          <div style={{ height: '500px' }}>
-            {neighbors && (
-              <SimpleTable
-                columns={[
-                  { label: 'Rank', key: 'rank' },
-                  { label: 'Username', key: 'username' },
-                  {
-                    label: 'Study Time (h)',
-                    key: 'study_time',
-                    numeric: true,
-                  },
-                ]}
-                data={neighbors}
-                height={500}
-                customRenders={(row, key) => {
-                  let res = row[key]
-                  if (key == 'username') {
-                    res =
-                      row[key].length < 18
-                        ? row[key]
-                        : row[key].substring(0, 18) + '...'
+    <Grid container spacing={3}>
+      <Grid item xs={8}>
+        <Paper style={{ height: '500px' }}>
+          <Grid container>
+            <Grid item xs={12}>
+              <Box display="flex">
+                <ChartCard
+                  label="Discord User Name"
+                  value={userStats && userStats?.username}
+                />
+                <ChartCard
+                  label="Leaderboard Placement"
+                  value={userStats && `#${userStats.stats[timeInterval].rank}`}
+                />
+                <ChartCard
+                  label="Hours Studied"
+                  value={userStats && userStats.stats[timeInterval].study_time}
+                />
+                <ChartCard
+                  label="Average / day"
+                  value={
+                    userStats &&
+                    (
+                      userStats.stats[timeInterval].study_time /
+                      timeIntervalToDays[timeInterval]
+                    ).toFixed(2)
                   }
-                  if (key == 'study_time') {
-                    res = res.toFixed(1)
-                  }
-                  if (row['discord_user_id'] == userId) {
-                    res = <span style={{ fontWeight: 700 }}>{res}</span>
-                  }
-                  return res
-                }}
-                viewLink={row => `/users/${row['discord_user_id']}`}
-              />
-            )}
-          </div>
-        </Grid>
-
-        <Grid item xs={8}>
-          <Paper className={classes.infoCard}>
-            {userStats && (
-              <div>
-                <Typography variant="h6" gutterBottom={true}>
-                  <span style={{ fontWeight: 700 }}>Study Role</span>
-                </Typography>
-                <Typography variant="body1">
-                  Current study role:
-                  {
-                    // @ts-ignore
-                    ` @${userStats?.roleInfo?.role?.name}`
-                  }
-                </Typography>
-
-                <Typography variant="body1">
-                  Next study role:
-                  {
-                    // @ts-ignore
-                    userStats?.roleInfo?.role?.name ==
-                    userStats?.roleInfo?.next_role?.name
-                      ? '👑 Highest Role Reached'
-                      : ` @${userStats?.roleInfo?.next_role?.name}`
-                  }
-                </Typography>
-                <Typography variant="body1">
-                  Role Rank:
-                  {
-                    // @ts-ignore
-                    ` 5/11`
-                  }
-                </Typography>
-
-                <Typography variant="body1">
-                  {
-                    // @ts-ignore
-                    `Role promotion in: ${userStats.roleInfo.time_to_next_role}h`
-                  }
-                </Typography>
-                <Typography variant="body1">
-                  {
-                    // @ts-ignore
-                    `Current Study Streak: ${userStats.stats.currentStreak} days`
-                  }
-                </Typography>
-
-                <Typography variant="body1">
-                  {
-                    // @ts-ignore
-                    `Longest Study Streak: ${userStats.stats.longestStreak} days`
-                  }
-                </Typography>
+                />
+              </Box>
+              <div style={{ height: '350px', paddingRight: '20px' }}>
+                {series && (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={series}>
+                      <CartesianGrid
+                        stroke="#eee"
+                        strokeDasharray="5 3"
+                        vertical={false}
+                      />
+                      <XAxis dataKey="date" />
+                      <YAxis yAxisId="left" orientation="left" />
+                      <Tooltip
+                        content={
+                          // @ts-ignore
+                          <CustomTooltipContent />
+                        }
+                        cursor={{ fill: '#E0E0E0' }}
+                      />
+                      <Bar
+                        yAxisId="left"
+                        dataKey="study_time"
+                        fill="#8a85ff"
+                        radius={7}
+                        barSize={10}
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                )}
               </div>
-            )}
-          </Paper>
-        </Grid>
-
-        <Grid item xs={4}>
-          <div style={{ height: '213px' }}>
-            {userStats && (
-              <SimpleTable
-                columns={[
-                  { label: 'Time Frame', key: 'timeFrame' },
-                  { label: 'Hours', key: 'study_time', numeric: true },
-                  {
-                    label: 'Place',
-                    key: 'rank',
-                    numeric: true,
-                  },
-                ]}
-                data={[
-                  {
-                    timeFrame: 'Past Day',
-                    ...userStats.stats['pastDay'],
-                  },
-                  {
-                    timeFrame: 'Past Week',
-                    ...userStats.stats['pastWeek'],
-                  },
-
-                  {
-                    timeFrame: 'Past Month',
-                    ...userStats.stats['pastMonth'],
-                  },
-
-                  {
-                    timeFrame: 'All Time',
-                    ...userStats.stats['allTime'],
-                  },
-                ]}
-                customRenders={(row, key) => {
-                  let res = row[key]
-                  if (key == 'study_time') {
-                    res = `${res.toFixed(1)}h`
-                  }
-                  if (key == 'rank') {
-                    res = `#${res}`
-                  }
-                  return res
-                }}
-                height={213}
-              />
-            )}
-          </div>
-        </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider className={classes.divider} />
+            </Grid>
+            <Grid item xs={12}>
+              <Box
+                display="flex"
+                align-items="center"
+                marginTop="6px"
+                marginLeft="20px"
+              >
+                <Select
+                  style={{ height: '35px' }}
+                  value={timeInterval}
+                  className={classes.select}
+                  inputProps={{
+                    classes: {
+                      icon: classes.icon,
+                    },
+                  }}
+                  onChange={(e: any) => {
+                    setTimeInterval(e.target.value)
+                  }}
+                >
+                  {/* <MenuItem value="pastDay">Past Day</MenuItem> */}
+                  <MenuItem value="pastWeek">Past Week</MenuItem>
+                  <MenuItem value="pastMonth">Past Month</MenuItem>
+                  {/* <MenuItem value="allTime">All Time</MenuItem> */}
+                </Select>
+              </Box>
+            </Grid>
+          </Grid>
+        </Paper>
       </Grid>
-    </Container>
+      <Grid item xs={4}>
+        <div style={{ height: '500px' }}>
+          {neighbors && (
+            <SimpleTable
+              columns={[
+                { label: 'Rank', key: 'rank' },
+                { label: 'Username', key: 'username' },
+                {
+                  label: 'Study Time (h)',
+                  key: 'study_time',
+                  numeric: true,
+                },
+              ]}
+              data={neighbors}
+              height={500}
+              customRenders={(row, key) => {
+                let res = row[key]
+                if (key == 'username') {
+                  res =
+                    row[key].length < 18
+                      ? row[key]
+                      : row[key].substring(0, 18) + '...'
+                }
+                if (key == 'study_time') {
+                  res = res.toFixed(1)
+                }
+                if (row['discord_user_id'] == userId) {
+                  res = <span style={{ fontWeight: 700 }}>{res}</span>
+                }
+                return res
+              }}
+              viewLink={row => `/users/${row['discord_user_id']}`}
+            />
+          )}
+        </div>
+      </Grid>
+
+      <Grid item xs={8}>
+        <Paper className={classes.infoCard}>
+          {userStats && (
+            <div>
+              <Typography variant="h6" gutterBottom={true}>
+                <span style={{ fontWeight: 700 }}>Study Role</span>
+              </Typography>
+              <Typography variant="body1">
+                Current study role:
+                {
+                  // @ts-ignore
+                  ` @${userStats?.roleInfo?.role?.name}`
+                }
+              </Typography>
+
+              <Typography variant="body1">
+                Next study role:
+                {
+                  // @ts-ignore
+                  userStats?.roleInfo?.role?.name ==
+                  userStats?.roleInfo?.next_role?.name
+                    ? '👑 Highest Role Reached'
+                    : ` @${userStats?.roleInfo?.next_role?.name}`
+                }
+              </Typography>
+              <Typography variant="body1">
+                Role Rank:
+                {
+                  // @ts-ignore
+                  ` 5/11`
+                }
+              </Typography>
+
+              <Typography variant="body1">
+                {
+                  // @ts-ignore
+                  `Role promotion in: ${userStats.roleInfo.time_to_next_role}h`
+                }
+              </Typography>
+              <Typography variant="body1">
+                {
+                  // @ts-ignore
+                  `Current Study Streak: ${userStats.stats.currentStreak} days`
+                }
+              </Typography>
+
+              <Typography variant="body1">
+                {
+                  // @ts-ignore
+                  `Longest Study Streak: ${userStats.stats.longestStreak} days`
+                }
+              </Typography>
+            </div>
+          )}
+        </Paper>
+      </Grid>
+
+      <Grid item xs={4}>
+        <div style={{ height: '213px' }}>
+          {userStats && (
+            <SimpleTable
+              columns={[
+                { label: 'Time Frame', key: 'timeFrame' },
+                { label: 'Hours', key: 'study_time', numeric: true },
+                {
+                  label: 'Place',
+                  key: 'rank',
+                  numeric: true,
+                },
+              ]}
+              data={[
+                {
+                  timeFrame: 'Past Day',
+                  ...userStats.stats['pastDay'],
+                },
+                {
+                  timeFrame: 'Past Week',
+                  ...userStats.stats['pastWeek'],
+                },
+
+                {
+                  timeFrame: 'Past Month',
+                  ...userStats.stats['pastMonth'],
+                },
+
+                {
+                  timeFrame: 'All Time',
+                  ...userStats.stats['allTime'],
+                },
+              ]}
+              customRenders={(row, key) => {
+                let res = row[key]
+                if (key == 'study_time') {
+                  res = `${res.toFixed(1)}h`
+                }
+                if (key == 'rank') {
+                  res = `#${res}`
+                }
+                return res
+              }}
+              height={213}
+            />
+          )}
+        </div>
+      </Grid>
+    </Grid>
   )
 }
 
