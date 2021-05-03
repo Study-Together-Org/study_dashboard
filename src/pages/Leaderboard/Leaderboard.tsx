@@ -20,12 +20,12 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 
 const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Username' },
-  {
-    id: 'study_time_minutes',
-    numeric: true,
-    disablePadding: false,
-    label: 'Study Time in Minutes',
-  },
+  // {
+  //   id: 'study_time_minutes',
+  //   numeric: true,
+  //   disablePadding: false,
+  //   label: 'Study Time in Minutes',
+  // },
   {
     id: 'study_time_hours',
     numeric: true,
@@ -317,9 +317,9 @@ const Leaderboard = () => {
                         >
                           {row.username}
                         </TableCell>
-                        <TableCell align="right">
+                        {/* <TableCell align="right">
                           {Math.round(row.study_time * 60)}
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell align="right">
                           {row.study_time.toFixed(1)}
                         </TableCell>
@@ -342,7 +342,7 @@ const Leaderboard = () => {
           />
           <div style={{ flexGrow: 1 }}>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
+              rowsPerPageOptions={[]}
               component="div"
               count={leaderboardData.num_users || '...'}
               rowsPerPage={rowsPerPage}
