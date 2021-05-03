@@ -12,6 +12,7 @@ import UserPage from './pages/User'
 import Leaderboard from './pages/Leaderboard'
 import Box from '@material-ui/core/Box'
 import VerticalNav from 'components/VerticalNav'
+import Login from './pages/Login'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
-    fontFamily: 'Titillium Web',
+    // fontFamily: 'Titillium Web',
   },
   navButton: {
     textTransform: 'none',
@@ -38,51 +39,14 @@ function App() {
   const classes = useStyles()
   const preventDefault = event => event.preventDefault()
 
+  // check if user is signed in
+  // add the user info to redux?
+  // naw just check if they have a session
+
+  // return <Login />
+
   return (
     <div className="{classes.root}">
-      {/* <AppBar position="static">
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-              <MenuIcon />
-              </IconButton>
-          <div className={classes.title}>
-            <Button component={Link} to="/" className={classes.navButton}>
-              <Typography variant="h6" className={classes.title}>
-                <Box fontWeight="fontWeightBold">
-                  Study Together Dashboard (Beta)
-                </Box>
-              </Typography>
-            </Button>
-          </div>
-
-          <Typography>Leaderboard</Typography>
-              <Typography>Leaderboard</Typography>
-              <Typography>Leaderboard</Typography>
-          <Link component="button" href="/leaderboard" onClick={preventDefault}>Leaderboard</Link>
-              <Link component="button" href="/users" onClick={preventDefault}>Users</Link>
-              <Link component="button" href="/rules" onClick={preventDefault}>Rules</Link>
-          <Button
-            component={Link}
-            to="/leaderboard"
-            className={classes.navButton}
-          >
-            <Box fontWeight={600}>Leaderboard</Box>
-          </Button>
-          <Button component={Link} to="/users" className={classes.navButton}>
-            <Box fontWeight={600}>User Search</Box>
-          </Button>
-          <Button component={Link} to="/rules" className={classes.navButton}>
-            <Box fontWeight={600}>Rules</Box>
-          </Button>
-          <Button
-            target="_blank"
-            href="https://forms.gle/6AKTsMDz2DmJVAvy5"
-            className={classes.navButton}
-          >
-            <Box fontWeight={600}>Feedback Form</Box>
-          </Button>
-        </Toolbar>
-      </AppBar> */}
       <VerticalNav>
         <Switch>
           <Route exact path="/" component={Leaderboard} />

@@ -61,7 +61,7 @@ export default function ClippedDrawer({ children }) {
   const location = useLocation()
 
   const generalNav: [string, string, any][] = [
-    ['Leaderboard', '/leaderboard', <TableChartIcon />],
+    ['Leaderboard', '/', <TableChartIcon />],
     ['Your Study Stats', '/userstats', <EqualizerIcon />],
     ['User Search', '/users', <SearchIcon />],
   ]

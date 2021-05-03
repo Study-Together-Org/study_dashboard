@@ -17,9 +17,9 @@ const darkTheme = createMuiTheme({
   //     paper: '#20232A',
   //   },
   // },
-  typography: {
-    fontFamily: ['"Titillium Web"', '"sans-serif"'].join(','),
-  },
+  // typography: {
+  //   fontFamily: ['"Titillium Web"', '"sans-serif"'].join(','),
+  // },
   shape: {
     borderRadius: 16,
   },
