@@ -62,7 +62,7 @@ export default function ClippedDrawer({ children }) {
 
   const generalNav: [string, string, any][] = [
     ['Leaderboard', '/', <TableChartIcon />],
-    ['Your Study Stats', '/userstats', <EqualizerIcon />],
+    // ['Your Study Stats', '/userstats', <EqualizerIcon />],
     ['User Search', '/users', <SearchIcon />],
   ]
 
@@ -71,11 +71,11 @@ export default function ClippedDrawer({ children }) {
   ]
 
   const settingsNav: [string, string, any][] = [
-    ['Profile', '/profile', <PersonIcon />],
+    ['Profile (Coming Soon)', '/profile', <PersonIcon />],
   ]
 
   const infoNav: [string, string, any][] = [
-    ['FAQ', '/faq', <LiveHelpIcon />],
+    // ['FAQ', '/faq', <LiveHelpIcon />],
     ['Feedback Form', 'https://forms.gle/6AKTsMDz2DmJVAvy5', <FeedbackIcon />],
   ]
 
@@ -103,7 +103,7 @@ export default function ClippedDrawer({ children }) {
       >
         <Toolbar />
         <div className={classes.drawerContainer}>
-          <Paper className={classes.avatarCard}>
+          {/* <Paper className={classes.avatarCard}>
             <Avatar
               alt="Remy Sharp"
               src="https://material-ui.com/static/images/avatar/1.jpg"
@@ -112,7 +112,7 @@ export default function ClippedDrawer({ children }) {
               <Typography>Cole Killian</Typography>
               <Typography variant="caption">Your Plan: Premium</Typography>
             </span>
-          </Paper>
+          </Paper> */}
           <Divider />
           {navSections.map(([sectionName, section], index) => (
             <>
