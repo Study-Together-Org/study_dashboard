@@ -71,7 +71,7 @@ export default function ClippedDrawer({ children }) {
   ]
 
   const settingsNav: [string, string, any][] = [
-    ['Profile (Coming Soon)', '/profile', <PersonIcon />],
+    ['Profile', '/profile', <PersonIcon />],
   ]
 
   const infoNav: [string, string, any][] = [
@@ -91,11 +91,7 @@ export default function ClippedDrawer({ children }) {
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6" noWrap>
-            <span style={{ fontWeight: 700 }}>
-              Study Together Dashboard (Beta)
-            </span>
-          </Typography>
+          <img style={{ height: '30px' }} src="/logo.svg" />
         </Toolbar>
       </AppBar>
       <Drawer
@@ -153,7 +149,7 @@ export default function ClippedDrawer({ children }) {
                       style={{
                         color:
                           location.pathname.split('/')[1] ==
-                            route.split('/')[1] && '#3F51B5',
+                            route.split('/')[1] && '#FF6F61',
                       }}
                     >
                       <ListItemIcon
@@ -161,7 +157,7 @@ export default function ClippedDrawer({ children }) {
                           justifyContent: 'center',
                           color:
                             location.pathname.split('/')[1] ==
-                              route.split('/')[1] && '#3F51B5',
+                              route.split('/')[1] && '#FF6F61',
                         }}
                       >
                         {e}
