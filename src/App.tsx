@@ -29,6 +29,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: '16px',
     color: 'white',
   },
+  logo: {
+    height: '30px',
+  },
 }))
 
 // style={{ backgroundColor: '#20232A' }}
@@ -38,7 +41,7 @@ function App() {
   const preventDefault = event => event.preventDefault()
 
   return (
-    <div className="{classes.root}">
+    <div className="classes.root">
       <AppBar position="static">
         <Toolbar>
           {/* <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
@@ -46,11 +49,12 @@ function App() {
               </IconButton> */}
           <div className={classes.title}>
             <Button component={Link} to="/" className={classes.navButton}>
-              <Typography variant="h6" className={classes.title}>
+              <img className={classes.logo} src="/logo.svg" />
+              {/* <Typography variant="h6" className={classes.title}>
                 <Box fontWeight="fontWeightBold">
                   Study Together Dashboard (Beta)
                 </Box>
-              </Typography>
+              </Typography> */}
             </Button>
           </div>
 
