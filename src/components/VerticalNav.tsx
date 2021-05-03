@@ -81,8 +81,8 @@ export default function ClippedDrawer({ children }) {
 
   const navSections: [string, [string, string, any][]][] = [
     ['General', generalNav],
-    ['Apps', appNav],
-    ['Settings', settingsNav],
+    // ['Apps', appNav],
+    // ['Settings', settingsNav],
     ['Info', infoNav],
   ]
 
@@ -91,7 +91,9 @@ export default function ClippedDrawer({ children }) {
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
-          <img style={{ height: '30px' }} src="/logo.svg" />
+          <Button component={Link} to="/">
+            <img style={{ height: '30px' }} src="/logo.svg" />
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
