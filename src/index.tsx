@@ -9,7 +9,7 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { Shadows } from '@material-ui/core/styles/shadows'
 
-const darkTheme = createMuiTheme({
+const theme = createMuiTheme({
   // palette: {
   //   type: 'dark',
   //   background: {
@@ -17,6 +17,14 @@ const darkTheme = createMuiTheme({
   //     paper: '#20232A',
   //   },
   // },
+  palette: {
+    primary: {
+      main: '#FF6F61',
+    },
+    background: {
+      default: '#F4F2F2',
+    },
+  },
   typography: {
     fontFamily: ['"Source Sans Pro"', '"sans-serif"'].join(','),
   },
@@ -35,7 +43,7 @@ const darkTheme = createMuiTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
         <App />

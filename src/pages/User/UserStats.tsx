@@ -250,7 +250,7 @@ function UserStats() {
                         <Bar
                           yAxisId="left"
                           dataKey="study_time"
-                          fill="#8a85ff"
+                          fill="#9656A1"
                           radius={7}
                           barSize={10}
                         />
