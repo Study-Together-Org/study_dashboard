@@ -217,9 +217,11 @@ function UserStats() {
                   label="Average / day"
                   value={
                     userStats &&
-                    (
-                      userStats.stats[timeInterval].study_time /
-                      timeIntervalToDays[timeInterval]
+                    (timeInterval == 'pastMonth' && series
+                      ? // @ts-ignore
+                        userStats.stats[timeInterval].study_time / series.length
+                      : userStats.stats[timeInterval].study_time /
+                        timeIntervalToDays[timeInterval]
                     ).toFixed(2)
                   }
                 />
