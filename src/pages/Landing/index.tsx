@@ -12,7 +12,6 @@ function Landing() {
           <Typography
             variant="h1"
             style={{
-              fontFamily: 'Titillium Web',
               fontWeight: 700,
               fontSize: '8rem',
             }}

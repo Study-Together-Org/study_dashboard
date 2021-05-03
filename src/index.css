@@ -1,8 +1,13 @@
 body {
   margin: 0;
   background-color: #161a1e;
+<<<<<<< HEAD
   /* font-family: 'Titillium Web', sans-serif; */
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+=======
+  font-family: 'Source Sans Pro', sans-serif;
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+>>>>>>> master
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -10,13 +15,17 @@ body {
 }
 
 code {
+<<<<<<< HEAD
     /* font-family: 'Titillium Web', sans-serif; */
+=======
+    font-family: 'Source Sans Pro', sans-serif;
+>>>>>>> master
   /* font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', 
     monospace; */
 }
 
 /*
 * {
-    font-family: 'Titillium Web', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 */

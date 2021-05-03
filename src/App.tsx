@@ -23,13 +23,16 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
-    // fontFamily: 'Titillium Web',
+    fontFamily: 'Source Sans Pro',
   },
   navButton: {
     textTransform: 'none',
     margin: '0px 10px',
     fontSize: '16px',
     color: 'white',
+  },
+  logo: {
+    height: '30px',
   },
 }))
 
