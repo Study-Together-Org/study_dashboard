@@ -9,14 +9,14 @@ import Typography from '@material-ui/core/Typography'
 import { api as axios } from '../../services'
 
 function UserPage() {
-  const getData = async () => {
-    const { data } = await axios.get('/me')
-    console.log(data)
-  }
+  // const getData = async () => {
+  //   const { data } = await axios.get('/me')
+  //   console.log(data)
+  // }
 
-  useEffect(() => {
-    getData()
-  }, [])
+  // useEffect(() => {
+  //   getData()
+  // }, [])
 
   return <div></div>
 }

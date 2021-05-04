@@ -22,6 +22,7 @@ import ListAltIcon from '@material-ui/icons/ListAlt'
 import PersonIcon from '@material-ui/icons/Person'
 import LiveHelpIcon from '@material-ui/icons/LiveHelp'
 import FeedbackIcon from '@material-ui/icons/Feedback'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 
 const drawerWidth = 240
 
@@ -62,7 +63,7 @@ export default function ClippedDrawer({ children }) {
 
   const generalNav: [string, string, any][] = [
     ['Leaderboard', '/', <TableChartIcon />],
-    // ['Your Study Stats', '/userstats', <EqualizerIcon />],
+    ['Your Study Stats', '/userstats', <EqualizerIcon />],
     ['User Search', '/users', <SearchIcon />],
   ]
 
@@ -71,18 +72,19 @@ export default function ClippedDrawer({ children }) {
   ]
 
   const settingsNav: [string, string, any][] = [
-    ['Profile (Coming Soon)', '/profile', <PersonIcon />],
+    // ['Profile (Coming Soon)', '/profile', <PersonIcon />],
+    ['Logout', '/logout', <ExitToAppIcon />],
   ]
 
   const infoNav: [string, string, any][] = [
-    // ['FAQ', '/faq', <LiveHelpIcon />],
+    ['FAQ', '/faq', <LiveHelpIcon />],
     ['Feedback Form', 'https://forms.gle/6AKTsMDz2DmJVAvy5', <FeedbackIcon />],
   ]
 
   const navSections: [string, [string, string, any][]][] = [
     ['General', generalNav],
     // ['Apps', appNav],
-    // ['Settings', settingsNav],
+    ['Account', settingsNav],
     ['Info', infoNav],
   ]
 
@@ -117,7 +119,7 @@ export default function ClippedDrawer({ children }) {
           </Paper> */}
           <Divider />
           {navSections.map(([sectionName, section], index) => (
-            <>
+            <div key={sectionName}>
               <Typography style={{ margin: '20px 0 0 20px' }} component="div">
                 <Box fontWeight="fontWeightBold">{sectionName}</Box>
               </Typography>
@@ -169,7 +171,7 @@ export default function ClippedDrawer({ children }) {
                   )
                 )}
               </List>
-            </>
+            </div>
           ))}
         </div>
       </Drawer>
