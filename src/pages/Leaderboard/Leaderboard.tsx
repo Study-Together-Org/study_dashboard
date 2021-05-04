@@ -142,7 +142,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: 550,
+    minWidth: 250,
   },
   visuallyHidden: {
     border: 0,
@@ -345,6 +345,7 @@ const Leaderboard = () => {
               rowsPerPageOptions={[]}
               component="div"
               count={leaderboardData.num_users || '...'}
+              labelDisplayedRows={({ from, to, count }) => from + '-' + to}
               rowsPerPage={rowsPerPage}
               page={page}
               onChangePage={handleChangePage}
