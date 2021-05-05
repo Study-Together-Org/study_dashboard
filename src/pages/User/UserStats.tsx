@@ -196,8 +196,8 @@ function UserStats() {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} sm={8}>
-        <Paper style={{ height: '500px' }}>
+      <Grid item xs={12} md={8}>
+        <Paper style={{ height: '510px' }}>
           <Grid container>
             <Grid item xs={12}>
               <Box display="flex">
@@ -288,7 +288,7 @@ function UserStats() {
         </Paper>
       </Grid>
 
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} md={4}>
         <div style={{ height: '500px' }}>
           {neighbors && (
             <SimpleTable
@@ -325,7 +325,7 @@ function UserStats() {
         </div>
       </Grid>
 
-      <Grid item xs={12} sm={8}>
+      <Grid item xs={12} md={8}>
         <Paper className={classes.infoCard}>
           {userStats && (
             <div>
@@ -382,7 +382,7 @@ function UserStats() {
         </Paper>
       </Grid>
 
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} md={4}>
         <div style={{ height: '213px' }}>
           {userStats && (
             <SimpleTable
