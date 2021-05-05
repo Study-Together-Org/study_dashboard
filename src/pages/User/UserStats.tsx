@@ -2,9 +2,9 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useHistory } from 'react-router'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
-import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Divider from '@material-ui/core/Divider'
+import Grid, { GridSpacing } from '@material-ui/core/Grid'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles } from '@material-ui/core/styles'
@@ -196,7 +196,7 @@ function UserStats() {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={8}>
+      <Grid item xs={12} sm={8}>
         <Paper style={{ height: '500px' }}>
           <Grid container>
             <Grid item xs={12}>
@@ -287,7 +287,8 @@ function UserStats() {
           </Grid>
         </Paper>
       </Grid>
-      <Grid item xs={4}>
+
+      <Grid item xs={12} sm={4}>
         <div style={{ height: '500px' }}>
           {neighbors && (
             <SimpleTable
@@ -324,7 +325,7 @@ function UserStats() {
         </div>
       </Grid>
 
-      <Grid item xs={8}>
+      <Grid item xs={12} sm={8}>
         <Paper className={classes.infoCard}>
           {userStats && (
             <div>
@@ -381,7 +382,7 @@ function UserStats() {
         </Paper>
       </Grid>
 
-      <Grid item xs={4}>
+      <Grid item xs={12} sm={4}>
         <div style={{ height: '213px' }}>
           {userStats && (
             <SimpleTable
