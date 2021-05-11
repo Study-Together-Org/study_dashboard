@@ -199,61 +199,73 @@ function UserStats() {
       <Grid item xs={12} md={8}>
         <Paper style={{ height: '510px' }}>
           <Grid container>
-            <Grid item xs={12}>
-              <Box display="flex">
-                <ChartCard
-                  label="Discord User Name"
-                  value={userStats && userStats?.username}
-                />
-                <ChartCard
-                  label="Leaderboard Placement"
-                  value={userStats && `#${userStats.stats[timeInterval].rank}`}
-                />
-                <ChartCard
-                  label="Hours Studied"
-                  value={userStats && userStats.stats[timeInterval].study_time}
-                />
-                <ChartCard
-                  label="Average / day"
-                  value={
-                    userStats &&
-                    (
-                      userStats.stats[timeInterval].study_time /
-                      timeIntervalToDays[timeInterval]
-                    ).toFixed(2)
-                  }
-                />
-              </Box>
-              <div style={{ height: '350px', paddingRight: '20px' }}>
-                {series && (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={series}>
-                      <CartesianGrid
-                        stroke="#eee"
-                        strokeDasharray="5 3"
-                        vertical={false}
-                      />
-                      <XAxis dataKey="date" />
-                      <YAxis yAxisId="left" orientation="left" />
-                      <Tooltip
-                        content={
-                          // @ts-ignore
-                          <CustomTooltipContent />
-                        }
-                        cursor={{ fill: '#E0E0E0' }}
-                      />
-                      <Bar
-                        yAxisId="left"
-                        dataKey="study_time"
-                        fill="#9656A1"
-                        radius={7}
-                        barSize={10}
-                      />
-                    </BarChart>
-                  </ResponsiveContainer>
-                )}
-              </div>
-            </Grid>
+            <Box display="flex">
+              <Grid container spacing={3}>
+                <Grid item xs={6} md={3}>
+                  <ChartCard
+                    label="Discord User Name"
+                    value={userStats && userStats?.username}
+                  />
+                </Grid>
+                <Grid item xs={6} md={3}>
+                  <ChartCard
+                    label="Leaderboard Placement"
+                    value={
+                      userStats && `#${userStats.stats[timeInterval].rank}`
+                    }
+                  />
+                </Grid>
+                <Grid item xs={6} md={3}>
+                  <ChartCard
+                    label="Hours Studied"
+                    value={
+                      userStats && userStats.stats[timeInterval].study_time
+                    }
+                  />
+                </Grid>
+                <Grid item xs={6} md={3}>
+                  <ChartCard
+                    label="Average / day"
+                    value={
+                      userStats &&
+                      (
+                        userStats.stats[timeInterval].study_time /
+                        timeIntervalToDays[timeInterval]
+                      ).toFixed(2)
+                    }
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+            <div style={{ height: '350px', paddingRight: '20px' }}>
+              {series && (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={series}>
+                    <CartesianGrid
+                      stroke="#eee"
+                      strokeDasharray="5 3"
+                      vertical={false}
+                    />
+                    <XAxis dataKey="date" />
+                    <YAxis yAxisId="left" orientation="left" />
+                    <Tooltip
+                      content={
+                        // @ts-ignore
+                        <CustomTooltipContent />
+                      }
+                      cursor={{ fill: '#E0E0E0' }}
+                    />
+                    <Bar
+                      yAxisId="left"
+                      dataKey="study_time"
+                      fill="#9656A1"
+                      radius={7}
+                      barSize={10}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
+            </div>
             <Grid item xs={12}>
               <Divider className={classes.divider} />
             </Grid>
