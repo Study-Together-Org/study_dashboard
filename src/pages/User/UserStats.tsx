@@ -79,20 +79,10 @@ const useStyles = makeStyles(theme => ({
   paper: {
     //   backgroundColor: '20232a',
     //   color: 'white',
-    height: '500px',
-    [theme.breakpoints.down('sm')]: {
-      height: '600px',
-    },
-  },
-  text: {
-    // color: 'white',
   },
   divider: {
     background: '#BEBEBE',
     height: '1px',
-  },
-  icon: {
-    /* fill: 'white', */
   },
   select: {
     '&:before': {
@@ -102,13 +92,13 @@ const useStyles = makeStyles(theme => ({
       borderColor: 'white !important',
     },
   },
-  chartCard: {
+  chartHeaderCard: {
     height: '100px',
     padding: '20px',
     lineHeight: '25px',
   },
   infoCard: {
-    height: '213px',
+    height: '100%',
     padding: '16px',
   },
 }))
@@ -176,7 +166,7 @@ function UserStats() {
   }, [userId, timeInterval])
 
   const ChartCard = ({ label, value }) => (
-    <Box className={classes.chartCard}>
+    <Box className={classes.chartHeaderCard}>
       <Typography variant="body1" gutterBottom={true}>
         <span style={{ fontWeight: 700 }}>{label}</span>
       </Typography>
@@ -243,7 +233,7 @@ function UserStats() {
                   </Grid>
                 </Grid>
               </Box>
-              <div style={{ height: '350px', paddingRight: '20px' }}>
+              <div style={{ height: '300px', paddingRight: '20px' }}>
                 {series && (
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={series}>
@@ -281,17 +271,13 @@ function UserStats() {
                 display="flex"
                 align-items="center"
                 marginTop="6px"
+                marginBottom="6px"
                 marginLeft="20px"
               >
                 <Select
                   style={{ height: '35px' }}
                   value={timeInterval}
                   className={classes.select}
-                  inputProps={{
-                    classes: {
-                      icon: classes.icon,
-                    },
-                  }}
                   onChange={(e: any) => {
                     setTimeInterval(e.target.value)
                   }}
@@ -308,7 +294,7 @@ function UserStats() {
       </Grid>
 
       <Grid item xs={12} md={4}>
-        <div style={{ height: '500px' }}>
+        <div>
           {neighbors && (
             <SimpleTable
               columns={[
@@ -369,13 +355,13 @@ function UserStats() {
                     : ` @${userStats?.roleInfo?.next_role?.name}`
                 }
               </Typography>
-              <Typography variant="body1">
+              {/* <Typography variant="body1">
                 Role Rank:
                 {
                   // @ts-ignore
                   ` 5/11`
                 }
-              </Typography>
+              </Typography> */}
 
               <Typography variant="body1">
                 {
@@ -402,7 +388,7 @@ function UserStats() {
       </Grid>
 
       <Grid item xs={12} md={4}>
-        <div style={{ height: '213px' }}>
+        <div>
           {userStats && (
             <SimpleTable
               columns={[
