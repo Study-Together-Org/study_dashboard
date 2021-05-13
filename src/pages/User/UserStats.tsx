@@ -202,7 +202,7 @@ function UserStats() {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={8}>
-        <Paper style={{ height: '600px' }}>
+        <Paper>
           <Grid container>
             <Grid item xs={12}>
               <Box display="flex">
