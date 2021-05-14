@@ -93,7 +93,7 @@ export default function ClippedDrawer({ children }) {
 
   const generalNav: [string, string, any][] = [
     ['Leaderboard', '/', <TableChartIcon />],
-    ['Your Study Stats', '/userstats', <EqualizerIcon />],
+    // ['Your Study Stats', '/userstats', <EqualizerIcon />],
     ['User Search', '/users', <SearchIcon />],
   ]
 
@@ -106,14 +106,14 @@ export default function ClippedDrawer({ children }) {
   ]
 
   const infoNav: [string, string, any][] = [
-    ['FAQ', '/faq', <LiveHelpIcon />],
+    // ['FAQ', '/faq', <LiveHelpIcon />],
     ['Feedback Form', 'https://forms.gle/6AKTsMDz2DmJVAvy5', <FeedbackIcon />],
   ]
 
   const navSections: [string, [string, string, any][]][] = [
     ['General', generalNav],
-    ['Apps', appNav],
-    ['Settings', settingsNav],
+    // ['Apps', appNav],
+    // ['Settings', settingsNav],
     ['Info', infoNav],
   ]
 
@@ -121,7 +121,7 @@ export default function ClippedDrawer({ children }) {
     <div>
       <Toolbar />
       <div className={classes.drawerContainer}>
-        <Paper className={classes.avatarCard}>
+        {/* <Paper className={classes.avatarCard}>
           <Avatar
             alt="Remy Sharp"
             src="https://material-ui.com/static/images/avatar/1.jpg"
@@ -131,7 +131,7 @@ export default function ClippedDrawer({ children }) {
             <Typography variant="caption">Your Plan: Premium</Typography>
           </span>
         </Paper>
-        <Divider />
+        <Divider /> */}
         {navSections.map(([sectionName, section], index) => (
           <>
             <Typography style={{ margin: '20px 0 0 20px' }} component="div">
