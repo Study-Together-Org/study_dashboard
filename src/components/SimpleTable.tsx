@@ -103,7 +103,7 @@ const SimpleTable = (props: IDataTableProps) => {
 
   return (
     <Paper className={classes.paper}>
-      <TableContainer style={{ overflow: 'hidden' }}>
+      <TableContainer style={{ minHeight: props.height, overflow: 'hidden' }}>
         <Table
           className={classes.table}
           aria-labelledby="tableTitle"
