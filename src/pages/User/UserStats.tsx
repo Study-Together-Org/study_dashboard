@@ -2,9 +2,9 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useHistory } from 'react-router'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
-import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import Divider from '@material-ui/core/Divider'
+import Grid, { GridSpacing } from '@material-ui/core/Grid'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import { makeStyles } from '@material-ui/core/styles'
@@ -26,6 +26,7 @@ import {
 import { api as axios } from '../../services'
 
 import CustomTooltipContent from '../../components/CustomTooltipContent'
+import { useMediaQuery } from '@material-ui/core'
 
 interface ParamTypes {
   userId: string
@@ -79,15 +80,9 @@ const useStyles = makeStyles(theme => ({
     //   backgroundColor: '20232a',
     //   color: 'white',
   },
-  text: {
-    // color: 'white',
-  },
   divider: {
     background: '#BEBEBE',
     height: '1px',
-  },
-  icon: {
-    /* fill: 'white', */
   },
   select: {
     '&:before': {
@@ -97,13 +92,13 @@ const useStyles = makeStyles(theme => ({
       borderColor: 'white !important',
     },
   },
-  chartCard: {
+  chartHeaderCard: {
     height: '100px',
     padding: '20px',
     lineHeight: '25px',
   },
   infoCard: {
-    height: '213px',
+    height: '100%',
     padding: '16px',
   },
 }))
@@ -171,7 +166,7 @@ function UserStats() {
   }, [userId, timeInterval])
 
   const ChartCard = ({ label, value }) => (
-    <Box className={classes.chartCard}>
+    <Box className={classes.chartHeaderCard}>
       <Typography variant="body1" gutterBottom={true}>
         <span style={{ fontWeight: 700 }}>{label}</span>
       </Typography>
@@ -196,33 +191,47 @@ function UserStats() {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={8}>
-        <Paper style={{ height: '500px' }}>
+      <Grid item xs={12} md={8}>
+        <Paper>
           <Grid container>
             <Grid item xs={12}>
               <Box display="flex">
-                <ChartCard
-                  label="Discord User Name"
-                  value={userStats && userStats?.username}
-                />
-                <ChartCard
-                  label="Leaderboard Placement"
-                  value={userStats && `#${userStats.stats[timeInterval].rank}`}
-                />
-                <ChartCard
-                  label="Hours Studied"
-                  value={userStats && userStats.stats[timeInterval].study_time}
-                />
-                <ChartCard
-                  label="Average / day"
-                  value={
-                    userStats &&
-                    (
-                      userStats.stats[timeInterval].study_time /
-                      timeIntervalToDays[timeInterval]
-                    ).toFixed(2)
-                  }
-                />
+                <Grid container>
+                  <Grid item xs={6} md={3}>
+                    <ChartCard
+                      label="Discord User Name"
+                      value={userStats && userStats?.username}
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={3}>
+                    <ChartCard
+                      label="Leaderboard Placement"
+                      value={
+                        userStats && `#${userStats.stats[timeInterval].rank}`
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={3}>
+                    <ChartCard
+                      label="Hours Studied"
+                      value={
+                        userStats && userStats.stats[timeInterval].study_time
+                      }
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={3}>
+                    <ChartCard
+                      label="Average / day"
+                      value={
+                        userStats &&
+                        (
+                          userStats.stats[timeInterval].study_time /
+                          timeIntervalToDays[timeInterval]
+                        ).toFixed(2)
+                      }
+                    />
+                  </Grid>
+                </Grid>
               </Box>
               <div style={{ height: '350px', paddingRight: '20px' }}>
                 {series && (
@@ -262,17 +271,13 @@ function UserStats() {
                 display="flex"
                 align-items="center"
                 marginTop="6px"
+                marginBottom="6px"
                 marginLeft="20px"
               >
                 <Select
                   style={{ height: '35px' }}
                   value={timeInterval}
                   className={classes.select}
-                  inputProps={{
-                    classes: {
-                      icon: classes.icon,
-                    },
-                  }}
                   onChange={(e: any) => {
                     setTimeInterval(e.target.value)
                   }}
@@ -287,8 +292,9 @@ function UserStats() {
           </Grid>
         </Paper>
       </Grid>
-      <Grid item xs={4}>
-        <div style={{ height: '500px' }}>
+
+      <Grid item xs={12} md={4}>
+        <div>
           {neighbors && (
             <SimpleTable
               columns={[
@@ -324,7 +330,7 @@ function UserStats() {
         </div>
       </Grid>
 
-      <Grid item xs={8}>
+      <Grid item xs={12} md={8}>
         <Paper className={classes.infoCard}>
           {userStats && (
             <div>
@@ -349,13 +355,13 @@ function UserStats() {
                     : ` @${userStats?.roleInfo?.next_role?.name}`
                 }
               </Typography>
-              <Typography variant="body1">
+              {/* <Typography variant="body1">
                 Role Rank:
                 {
                   // @ts-ignore
                   ` 5/11`
                 }
-              </Typography>
+              </Typography> */}
 
               <Typography variant="body1">
                 {
@@ -381,8 +387,8 @@ function UserStats() {
         </Paper>
       </Grid>
 
-      <Grid item xs={4}>
-        <div style={{ height: '213px' }}>
+      <Grid item xs={12} md={4}>
+        <div>
           {userStats && (
             <SimpleTable
               columns={[
