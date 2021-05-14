@@ -233,7 +233,7 @@ function UserStats() {
                   </Grid>
                 </Grid>
               </Box>
-              <div style={{ height: '300px', paddingRight: '20px' }}>
+              <div style={{ height: '350px', paddingRight: '20px' }}>
                 {series && (
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={series}>
