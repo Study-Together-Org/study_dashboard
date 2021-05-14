@@ -136,7 +136,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: 550,
+    minWidth: 250,
   },
   visuallyHidden: {
     border: 0,
@@ -311,6 +311,12 @@ const Leaderboard = () => {
                         >
                           {row.username}
                         </TableCell>
+<<<<<<< HEAD
+=======
+                        {/* <TableCell align="right">
+                          {Math.round(row.study_time * 60)}
+                        </TableCell> */}
+>>>>>>> master
                         <TableCell align="right">
                           {row.study_time.toFixed(1)}
                         </TableCell>
@@ -333,9 +339,10 @@ const Leaderboard = () => {
           />
           <div style={{ flexGrow: 1 }}>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
+              rowsPerPageOptions={[]}
               component="div"
               count={leaderboardData.num_users || '...'}
+              labelDisplayedRows={({ from, to, count }) => from + '-' + to}
               rowsPerPage={rowsPerPage}
               page={page}
               onChangePage={handleChangePage}
