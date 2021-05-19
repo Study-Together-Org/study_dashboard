@@ -8,7 +8,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { Shadows } from '@material-ui/core/styles/shadows'
-import GA from 'utils/GoogleAnalytics'
+import GA from 'services/GoogleAnalytics'
 
 const theme = createMuiTheme({
   // palette: {
@@ -47,7 +47,7 @@ ReactDOM.render(
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        { GA.init() && <GA.RouteTracker /> }
+        {GA.init() && <GA.RouteTracker />}
         <App />
       </BrowserRouter>
     </ThemeProvider>
