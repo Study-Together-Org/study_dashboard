@@ -12,6 +12,7 @@ import UserPage from './pages/User'
 import Leaderboard from './pages/Leaderboard'
 import Box from '@material-ui/core/Box'
 import VerticalNav from 'components/VerticalNav'
+import Maintenance from 'pages/Maintenance'
 import Login from './pages/Login'
 
 const useStyles = makeStyles(theme => ({
@@ -50,13 +51,14 @@ function App() {
 
   return (
     <div className="{classes.root}">
-      <VerticalNav>
+      <Maintenance />
+      {/* <VerticalNav>
         <Switch>
           <Route exact path="/" component={Leaderboard} />
           <Route path="/users" component={UserPage} />
           <Route path="/leaderboard" component={Leaderboard} />
         </Switch>
-      </VerticalNav>
+      </VerticalNav> */}
     </div>
   )
 }
