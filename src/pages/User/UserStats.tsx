@@ -223,11 +223,7 @@ function UserStats() {
                     <ChartCard
                       label="Average / day"
                       value={
-                        userStats &&
-                        (
-                          userStats.stats[timeInterval].study_time /
-                          timeIntervalToDays[timeInterval]
-                        ).toFixed(2)
+                        userStats && userStats.stats['averagePerDay'].toFixed(2)
                       }
                     />
                   </Grid>
