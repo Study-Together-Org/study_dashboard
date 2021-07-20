@@ -47,6 +47,12 @@ function App() {
   const classes = useStyles()
   const preventDefault = event => event.preventDefault()
   const [user, setUser] = useState(null)
+  // const [user, setUser] = useState({
+  //   id: 234,
+  //   username: 'ruborcalor',
+  //   discriminator: 2344,
+  //   avatar_url: 'https://colekillian.com',
+  // })
 
   // const getData = async () => {
   //   const { data } = await axios.get('/me')
@@ -70,6 +76,8 @@ function App() {
   // check if user is signed in
   // add the user info to redux?
   // naw just check if they have a session
+
+  console.log(user)
 
   if (user == null) {
     return <Login />
