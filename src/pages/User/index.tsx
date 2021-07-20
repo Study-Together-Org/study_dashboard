@@ -7,11 +7,7 @@ function UserPage() {
   return (
     <Switch>
       <Route exact path="/users" component={UserSearch} />
-      <Route
-        exact
-        path={['/users/:userId', '/users/:userId/stats']}
-        component={UserStats}
-      />
+      <Route exact path={['/users/:userId']} component={UserStats} />
     </Switch>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Button from '@material-ui/core/Button'
 import { makeStyles, useTheme, Theme } from '@material-ui/core/styles'
 import { createStyles } from '@material-ui/core/styles'
@@ -30,6 +30,8 @@ import ListAltIcon from '@material-ui/icons/ListAlt'
 import PersonIcon from '@material-ui/icons/Person'
 import LiveHelpIcon from '@material-ui/icons/LiveHelp'
 import FeedbackIcon from '@material-ui/icons/Feedback'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import { UserContext } from 'contexts/UserContext'
 
 const drawerWidth = 240
 
@@ -86,6 +88,7 @@ export default function ClippedDrawer({ children }) {
   const [mobileOpen, setMobileOpen] = React.useState(false)
 
   const location = useLocation()
+  const { user } = useContext(UserContext)
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
@@ -93,7 +96,7 @@ export default function ClippedDrawer({ children }) {
 
   const generalNav: [string, string, any][] = [
     ['Leaderboard', '/', <TableChartIcon />],
-    // ['Your Study Stats', '/userstats', <EqualizerIcon />],
+    ['Your Study Stats', '/userstats', <EqualizerIcon />],
     ['User Search', '/users', <SearchIcon />],
   ]
 
@@ -102,7 +105,8 @@ export default function ClippedDrawer({ children }) {
   ]
 
   const settingsNav: [string, string, any][] = [
-    ['Profile', '/profile', <PersonIcon />],
+    // ['Profile (Coming Soon)', '/profile', <PersonIcon />],
+    ['Logout', '/logout', <ExitToAppIcon />],
   ]
 
   const infoNav: [string, string, any][] = [
@@ -113,7 +117,7 @@ export default function ClippedDrawer({ children }) {
   const navSections: [string, [string, string, any][]][] = [
     ['General', generalNav],
     // ['Apps', appNav],
-    // ['Settings', settingsNav],
+    ['Settings', settingsNav],
     ['Info', infoNav],
   ]
 
@@ -121,17 +125,14 @@ export default function ClippedDrawer({ children }) {
     <div>
       <Toolbar />
       <div className={classes.drawerContainer}>
-        {/* <Paper className={classes.avatarCard}>
-          <Avatar
-            alt="Remy Sharp"
-            src="https://material-ui.com/static/images/avatar/1.jpg"
-          />
+        <Paper className={classes.avatarCard}>
+          <Avatar alt={user.username} src={user.avatar_url} />
           <span>
-            <Typography>Cole Killian</Typography>
+            <Typography>{user.username}</Typography>
             <Typography variant="caption">Your Plan: Premium</Typography>
           </span>
         </Paper>
-        <Divider /> */}
+        <Divider />
         {navSections.map(([sectionName, section], index) => (
           <>
             <Typography style={{ margin: '20px 0 0 20px' }} component="div">

@@ -4,13 +4,7 @@ import Box from '@material-ui/core/Box'
 import Leaderboard from './Leaderboard'
 
 function UserPage() {
-  return (
-    // <Container maxWidth="md">
-    //   <Box my={15}>
-    <Leaderboard />
-    // </Box>
-    // </Container>
-  )
+  return <Leaderboard />
 }
 
 export default UserPage

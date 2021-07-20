@@ -317,9 +317,6 @@ const Leaderboard = () => {
                         >
                           {row.username}
                         </TableCell>
-                        {/* <TableCell align="right">
-                          {Math.round(row.study_time * 60)}
-                        </TableCell> */}
                         <TableCell align="right">
                           {row.study_time.toFixed(1)}
                         </TableCell>

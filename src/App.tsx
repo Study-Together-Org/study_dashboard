@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Switch, Route, Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
@@ -12,7 +12,12 @@ import UserPage from './pages/User'
 import Leaderboard from './pages/Leaderboard'
 import Box from '@material-ui/core/Box'
 import VerticalNav from 'components/VerticalNav'
+import Profile from './pages/Profile'
 import Login from './pages/Login'
+import { api as axios } from './services'
+import { UserContext } from './contexts/UserContext'
+import YourUserStats from 'pages/User/YourUserStats'
+import Logout from 'pages/Logout'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,22 +46,57 @@ const useStyles = makeStyles(theme => ({
 function App() {
   const classes = useStyles()
   const preventDefault = event => event.preventDefault()
+  const [user, setUser] = useState(null)
+  // const [user, setUser] = useState({
+  //   id: 234,
+  //   username: 'ruborcalor',
+  //   discriminator: 2344,
+  //   avatar_url: 'https://colekillian.com',
+  // })
+
+  // const getData = async () => {
+  //   const { data } = await axios.get('/me')
+  //   console.log(data)
+  //   if
+  // }
+
+  useEffect(() => {
+    axios
+      .get('/me')
+      .then(res => {
+        console.log(res.data)
+        setUser(res.data)
+      })
+      .catch(e => {
+        // user not signed in
+        console.log(e)
+      })
+  }, [])
 
   // check if user is signed in
   // add the user info to redux?
   // naw just check if they have a session
 
-  // return <Login />
+  console.log(user)
+
+  if (user == null) {
+    return <Login />
+  }
 
   return (
     <div className="{classes.root}">
-      <VerticalNav>
-        <Switch>
-          <Route exact path="/" component={Leaderboard} />
-          <Route path="/users" component={UserPage} />
-          <Route path="/leaderboard" component={Leaderboard} />
-        </Switch>
-      </VerticalNav>
+      <UserContext.Provider value={{ user, setUser }}>
+        <VerticalNav>
+          <Switch>
+            <Route exact path="/" component={Leaderboard} />
+            <Route path="/users" component={UserPage} />
+            <Route path="/logout" component={Logout} />
+            <Route path="/userstats" component={YourUserStats} />
+            <Route path="/leaderboard" component={Leaderboard} />
+            <Route path="/profile" component={Profile} />
+          </Switch>
+        </VerticalNav>
+      </UserContext.Provider>
     </div>
   )
 }
