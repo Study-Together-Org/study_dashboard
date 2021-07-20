@@ -10,7 +10,8 @@ import { api as axios } from '../../services'
 import { Redirect } from 'react-router-dom'
 
 function UserPage() {
-  return <Redirect to="/login" />
+  window.location.replace(`${axios.defaults.baseURL}/login`)
+  return <Typography>Redirecting to login...</Typography>
 }
 
 export default UserPage
