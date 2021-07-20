@@ -8,7 +8,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { Shadows } from '@material-ui/core/styles/shadows'
-import GA from 'GoogleAnalytics'
+import GA from 'services/GoogleAnalytics'
 
 const theme = createMuiTheme({
   // palette: {

@@ -20,6 +20,12 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 
 const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Username' },
+  // {
+  //   id: 'study_time_minutes',
+  //   numeric: true,
+  //   disablePadding: false,
+  //   label: 'Study Time in Minutes',
+  // },
   {
     id: 'study_time_hours',
     numeric: true,
@@ -136,7 +142,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: 550,
+    minWidth: 250,
   },
   visuallyHidden: {
     border: 0,
@@ -333,9 +339,10 @@ const Leaderboard = () => {
           />
           <div style={{ flexGrow: 1 }}>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
+              rowsPerPageOptions={[]}
               component="div"
               count={leaderboardData.num_users || '...'}
+              labelDisplayedRows={({ from, to, count }) => from + '-' + to}
               rowsPerPage={rowsPerPage}
               page={page}
               onChangePage={handleChangePage}
